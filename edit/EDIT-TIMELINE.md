@@ -13,15 +13,16 @@ Rebuild: `python3 tools/build_captions.py && python3 tools/build_scenes.py && np
 70 groups, 3–5 words, lowercase, Inter Regular, soft dark pill, sitting at chest height (y≈1196), never over the face.
 Spelling standardised from the transcript: kalori, defisit, nasi lemak, roti canai, meal replacement, create rutin, komitmen.
 
-## 3. B-roll (full-frame cutaways, captions stay on)
+## 3. B-roll (translucent overlay cards, no cutaways)
+All visuals sit in the safe band **y 176–396 px**: below the app's top bar, above the face (the top of the face never goes above y≈398), and never over the captions (y≈1196). The cards are frosted, see-through white (66% opacity with a background blur), so the video always shows through.
 | Cut time | Said | Visual |
 |---|---|---|
-| 22.95–27.20 | kuih, kerepek, nasi lemak, roti canai | notes-style list, each item pops in as she names it |
-| 32.75–40.40 | meal replacement… create rutin | daily routine card (pagi: meal replacement / tengah hari: enjoy sikit) |
-| 44.30–47.45 | bakar kalori, defisit kalori | bar graphic: makan 1,600 vs dibakar 2,000 → −400 |
-| 51.65–55.25 | bersenam, lepas tu tambah makan | −300 kcal / +450 kcal = +150 kcal |
+| 22.95–27.20 | kuih, kerepek, nasi lemak, roti canai | "sarapan yang selalu teringin" chips pop in as named |
+| 32.75–40.40 | meal replacement… create rutin | her own shake + Formula 1 photo (`assets/meal-replacement.jpg`) next to a routine card |
+| 44.30–47.45 | bakar kalori, defisit kalori | horizontal bars: makan 1,600 vs dibakar 2,000, −400 gap (example numbers) |
+| 51.65–55.25 | bersenam, lepas tu tambah makan | −300 / +450 / hasilnya +150 kcal (example numbers) |
 | 67.95–70.72 | tiga hari tiga malam je | week strip, 3 days ticked |
-| 77.40–84.95 | recap 3 elemen | checklist ticks on each point |
+| 77.40–84.95 | recap 3 elemen | 3 ticks: ada rutin · bakar & defisit kalori · komitmen |
 
 ## 4. Face-tracked slow zoom (emotional beats)
 Face found by detection (centre ≈ x545, y745). Zoom is anchored on the face, eases in, and resets on the next cut.
