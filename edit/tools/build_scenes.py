@@ -74,17 +74,28 @@ body = """      <div class="card"><div class="title">rutin harian</div>
       </div>
     </div>
     <div id="rt-photo" class="photo"><img src="assets/meal-replacement.jpg" alt="meal replacement" /></div>
+    <div id="rt-tubs" class="tubs">
+      <img id="rt-tub0" src="assets/f1-berries.png" alt="Formula 1 summer berries" />
+      <img id="rt-tub1" src="assets/f1-chocolate.png" alt="Formula 1 smooth chocolate" />
+    </div>
     <div>"""
 # photo sits left of the face (face never left of x~330 here), between the top band and the captions
 css = """
     .photo { position: absolute; left: 54px; top: 440px; width: 256px; height: 332px; border-radius: 26px; overflow: hidden;
              opacity: 0; border: 3px solid rgba(255, 255, 255, 0.85); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22); }
     .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tubs { position: absolute; left: 40px; top: 430px; width: 290px; height: 350px; opacity: 0; }
+    .tubs img { position: absolute; bottom: 0; height: 330px; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35)); }
+    #rt-tub0 { left: 0; z-index: 2; }
+    #rt-tub1 { right: 0; height: 310px; z-index: 1; }
     .row { display: flex; font-size: 36px; line-height: 50px; opacity: 0; }
     .when { width: 220px; flex: none; color: #6f6a64; }"""
 js = "\n".join([
     '    tl.fromTo("#rt-photo", { opacity: 0, x: -20, scale: 0.97 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, %.2f);' % (33.17 - s),
-    '    tl.to("#rt-photo", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);',
+    '    tl.to("#rt-photo", { opacity: 0, scale: 0.97, duration: 0.25, ease: "power2.in" }, %.2f);' % (36.45 - s),
+    '    tl.fromTo("#rt-tubs", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, %.2f);' % (36.55 - s),
+    '    tl.fromTo("#rt-tub1", { x: -30 }, { x: 0, duration: 0.5, ease: "power3.out" }, %.2f);' % (36.65 - s),
+    '    tl.to("#rt-tubs", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);',
     pop("#rt-r0", 33.30 - s), pop("#rt-r1", 38.40 - s)])
 scenes.append(scene("rutin", s, e, body, css, js))
 
