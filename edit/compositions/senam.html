@@ -1,0 +1,47 @@
+<template>
+  <style>
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; }
+    .bg { position: absolute; inset: 0; background: #f2eee8; }
+    .wrap { position: absolute; inset: 0; opacity: 0; font-family: "Inter", sans-serif; color: #1c1c1e; }
+    .card { position: absolute; left: 70px; right: 70px; top: 300px; background: #fff; border-radius: 40px;
+            padding: 56px 60px 60px; box-shadow: 0 24px 70px rgba(40, 30, 20, 0.10); }
+    .meta { font-size: 30px; color: #9a948c; margin-bottom: 18px; }
+    .title { font-size: 64px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 34px; }
+    .row { display: flex; align-items: center; gap: 26px; font-size: 52px; padding: 22px 0;
+           border-top: 2px solid #efebe5; opacity: 0; }
+    .row:first-of-type { border-top: none; }
+    .muted { color: #9a948c; }
+    .tick { width: 54px; height: 54px; border-radius: 50%; border: 3px solid #d8d2ca; flex: none;
+            display: flex; align-items: center; justify-content: center; }
+    .tick svg { width: 30px; height: 30px; opacity: 0; }
+    .tick.on { border-color: #1e63d6; background: #1e63d6; }
+
+    .lab { flex: 1; }
+    .num { font-weight: 700; }
+    .num.neg { color: #1e63d6; }
+    .num.pos { color: #d9576b; }
+    .row.total { border-top: 3px solid #1c1c1e; margin-top: 8px; }
+  </style>
+  <div id="root" data-composition-id="senam" data-width="1080" data-height="1920">
+    <div class="bg"></div>
+    <div id="senam-wrap" class="wrap">
+      <div class="card"><div class="meta">lepas gym</div><div class="title">bakar, lepas tu tambah</div>
+        <div id="sn-r0" class="row"><span class="lab">bersenam</span><span class="num neg">−300 kcal</span></div>
+        <div id="sn-r1" class="row"><span class="lab">tambah makan</span><span class="num">+450 kcal</span></div>
+        <div id="sn-r2" class="row total"><span class="lab">hasilnya</span><span class="num pos">+150 kcal</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const D = 3.6;
+    tl.fromTo("#senam-wrap", { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power2.out" }, 0);
+    tl.fromTo("#senam-wrap .card", { y: 36, scale: 0.985 }, { y: 0, scale: 1, duration: 0.45, ease: "power3.out" }, 0);
+    tl.fromTo("#sn-r0", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 0.15);
+    tl.fromTo("#sn-r1", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 2.45);
+    tl.fromTo("#sn-r2", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 2.97);
+    window.__timelines["senam"] = tl;
+  </script>
+</template>

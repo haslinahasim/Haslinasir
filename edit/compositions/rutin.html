@@ -1,0 +1,42 @@
+<template>
+  <style>
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; }
+    .bg { position: absolute; inset: 0; background: #f2eee8; }
+    .wrap { position: absolute; inset: 0; opacity: 0; font-family: "Inter", sans-serif; color: #1c1c1e; }
+    .card { position: absolute; left: 70px; right: 70px; top: 300px; background: #fff; border-radius: 40px;
+            padding: 56px 60px 60px; box-shadow: 0 24px 70px rgba(40, 30, 20, 0.10); }
+    .meta { font-size: 30px; color: #9a948c; margin-bottom: 18px; }
+    .title { font-size: 64px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 34px; }
+    .row { display: flex; align-items: center; gap: 26px; font-size: 52px; padding: 22px 0;
+           border-top: 2px solid #efebe5; opacity: 0; }
+    .row:first-of-type { border-top: none; }
+    .muted { color: #9a948c; }
+    .tick { width: 54px; height: 54px; border-radius: 50%; border: 3px solid #d8d2ca; flex: none;
+            display: flex; align-items: center; justify-content: center; }
+    .tick svg { width: 30px; height: 30px; opacity: 0; }
+    .tick.on { border-color: #1e63d6; background: #1e63d6; }
+
+    .when { width: 300px; flex: none; color: #9a948c; font-size: 44px; }
+    .what { font-size: 50px; }
+  </style>
+  <div id="root" data-composition-id="rutin" data-width="1080" data-height="1920">
+    <div class="bg"></div>
+    <div id="rutin-wrap" class="wrap">
+      <div class="card"><div class="meta">rutin harian</div><div class="title">dah tahu nak makan apa</div>
+        <div id="rt-r0" class="row"><span class="when">pagi</span><span class="what">meal replacement</span></div>
+        <div id="rt-r1" class="row"><span class="when">tengah hari</span><span class="what">makan, enjoy sikit</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const D = 7.65;
+    tl.fromTo("#rutin-wrap", { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power2.out" }, 0);
+    tl.fromTo("#rutin-wrap .card", { y: 36, scale: 0.985 }, { y: 0, scale: 1, duration: 0.45, ease: "power3.out" }, 0);
+    tl.fromTo("#rt-r0", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 0.42);
+    tl.fromTo("#rt-r1", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 5.65);
+    window.__timelines["rutin"] = tl;
+  </script>
+</template>
