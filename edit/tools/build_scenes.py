@@ -68,18 +68,24 @@ scenes.append(scene("sarapan", s, e, body, css, js))
 
 # 2 routine, with her own meal replacement photo
 s, e = 32.75, 40.40
-body = """      <div id="rt-photo" class="photo"><img src="assets/meal-replacement.jpg" alt="meal replacement" /></div>
-      <div class="card"><div class="title">rutin harian</div>
+body = """      <div class="card"><div class="title">rutin harian</div>
         <div id="rt-r0" class="row"><span class="when">pagi</span><span>meal replacement</span></div>
         <div id="rt-r1" class="row"><span class="when">tengah hari</span><span>makan, enjoy sikit</span></div>
-      </div>"""
+      </div>
+    </div>
+    <div id="rt-photo" class="photo"><img src="assets/meal-replacement.jpg" alt="meal replacement" /></div>
+    <div>"""
+# photo sits left of the face (face never left of x~330 here), between the top band and the captions
 css = """
-    .photo { width: 170px; height: 220px; flex: none; border-radius: 24px; overflow: hidden; opacity: 0;
-             border: 3px solid rgba(255, 255, 255, 0.85); box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18); }
+    .photo { position: absolute; left: 54px; top: 440px; width: 256px; height: 332px; border-radius: 26px; overflow: hidden;
+             opacity: 0; border: 3px solid rgba(255, 255, 255, 0.85); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22); }
     .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .row { display: flex; font-size: 36px; line-height: 50px; opacity: 0; }
     .when { width: 220px; flex: none; color: #6f6a64; }"""
-js = "\n".join([pop("#rt-photo", 33.17 - s), pop("#rt-r0", 33.30 - s), pop("#rt-r1", 38.40 - s)])
+js = "\n".join([
+    '    tl.fromTo("#rt-photo", { opacity: 0, x: -20, scale: 0.97 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, %.2f);' % (33.17 - s),
+    '    tl.to("#rt-photo", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);',
+    pop("#rt-r0", 33.30 - s), pop("#rt-r1", 38.40 - s)])
 scenes.append(scene("rutin", s, e, body, css, js))
 
 # 3 calorie deficit, horizontal bars

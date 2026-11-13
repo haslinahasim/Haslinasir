@@ -18,7 +18,7 @@ All visuals sit in the safe band **y 176–396 px**: below the app's top bar, ab
 | Cut time | Said | Visual |
 |---|---|---|
 | 22.95–27.20 | kuih, kerepek, nasi lemak, roti canai | "sarapan yang selalu teringin" chips pop in as named |
-| 32.75–40.40 | meal replacement… create rutin | her own shake + Formula 1 photo (`assets/meal-replacement.jpg`) next to a routine card |
+| 32.75–40.40 | meal replacement… create rutin | routine card in the top band + her own shake & Formula 1 photo (`assets/meal-replacement.jpg`, 256×332) left of the face |
 | 44.30–47.45 | bakar kalori, defisit kalori | horizontal bars: makan 1,600 vs dibakar 2,000, −400 gap (example numbers) |
 | 51.65–55.25 | bersenam, lepas tu tambah makan | −300 / +450 / hasilnya +150 kcal (example numbers) |
 | 67.95–70.72 | tiga hari tiga malam je | week strip, 3 days ticked |
