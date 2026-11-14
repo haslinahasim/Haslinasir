@@ -1,0 +1,484 @@
+<title>Pemerhati Viral</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: radar console. Header + keyword watchlist, summary strip, ranked feed of posts scored by speed and engagement. */
+:root {
+  --bg: #f3f4f8;
+  --surface: #ffffff;
+  --ink: #161a2e;
+  --muted: #5d6380;
+  --line: #dde0eb;
+  --accent: #c2185b;
+  --accent-soft: #fbe3ee;
+  --hot: #d9480f;  --hot-soft: #ffe8d9;
+  --rise: #9a6700; --rise-soft: #fff3c4;
+  --cool: #4a5578; --cool-soft: #e8eaf3;
+  --tiktok: #111; --ig: #c13584; --fb: #1877f2; --threads: #333;
+  --f-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1120; --surface: #181b2e; --ink: #e8eaf6; --muted: #9aa0bf; --line: #2a2e48;
+  --accent: #ff5c9a; --accent-soft: #3a1630;
+  --hot: #ff8a4c; --hot-soft: #3d1f10; --rise: #f2c94c; --rise-soft: #3a2f0c; --cool: #a7b0d6; --cool-soft: #232741;
+  --tiktok: #e8eaf6; --ig: #f06bb5; --fb: #5ea2ff; --threads: #c9cce0;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1120; --surface: #181b2e; --ink: #e8eaf6; --muted: #9aa0bf; --line: #2a2e48;
+  --accent: #ff5c9a; --accent-soft: #3a1630;
+  --hot: #ff8a4c; --hot-soft: #3d1f10; --rise: #f2c94c; --rise-soft: #3a2f0c; --cool: #a7b0d6; --cool-soft: #232741;
+  --tiktok: #e8eaf6; --ig: #f06bb5; --fb: #5ea2ff; --threads: #c9cce0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 24px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 22px; }
+h1, h2 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(28px, 6vw, 40px); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 18px; font-weight: 600; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+header { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; justify-content: space-between; }
+header p { margin: 4px 0 0; max-width: 60ch; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+button, .btn { font: inherit; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 9px 14px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+button:hover, .btn:hover { border-color: var(--muted); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 6px 8px; }
+button.ghost:hover { color: var(--ink); }
+button:disabled { opacity: .55; cursor: default; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; gap: 2px; }
+.tile .val { font-family: var(--f-display); font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 12px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { font-size: 13px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); display: inline-flex; gap: 6px; align-items: center; }
+.chip button { all: unset; cursor: pointer; color: var(--muted); font-weight: 700; padding: 0 2px; }
+.chip button:focus-visible { outline: 2px solid var(--accent); }
+.filter { cursor: pointer; font-weight: 500; }
+.filter[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+input, select, textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+.kw-form { display: flex; gap: 8px; flex: 1 1 260px; }
+.kw-form input { flex: 1; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+
+.feed { display: grid; gap: 10px; }
+.post { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+  display: grid; grid-template-columns: 76px minmax(0, 1fr) 150px; gap: 16px; align-items: center; }
+.post.hot { border-color: color-mix(in srgb, var(--hot) 45%, var(--line)); }
+.score { display: grid; justify-items: center; gap: 4px; }
+.score .num { font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.pill { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.hot { background: var(--hot-soft); color: var(--hot); }
+.pill.rise { background: var(--rise-soft); color: var(--rise); }
+.pill.cool { background: var(--cool-soft); color: var(--cool); }
+.pill.ex { background: var(--accent-soft); color: var(--accent); }
+.meta { display: grid; gap: 6px; min-width: 0; }
+.meta .top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.plat { font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+.plat::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.plat.tiktok { color: var(--tiktok); } .plat.instagram { color: var(--ig); } .plat.facebook { color: var(--fb); } .plat.threads { color: var(--threads); }
+.topic { font-weight: 600; overflow-wrap: anywhere; }
+.stats { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); }
+.stats b { color: var(--ink); font-weight: 500; }
+.kwhit { background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
+.side { display: grid; gap: 6px; justify-items: end; }
+.side svg { width: 150px; height: 40px; max-width: 100%; }
+.post-actions { display: flex; flex-wrap: wrap; gap: 2px; grid-column: 1 / -1; border-top: 1px dashed var(--line); padding-top: 8px; margin-top: -4px; }
+.ai-out { grid-column: 1 / -1; background: var(--bg); border-radius: 10px; padding: 12px 14px; white-space: pre-wrap; font-size: 14px; max-width: 100%; overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .post { grid-template-columns: 60px minmax(0, 1fr); }
+  .side { grid-column: 1 / -1; justify-items: start; }
+}
+.empty { text-align: center; padding: 36px 16px; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
+.note { font-size: 13px; color: var(--muted); }
+.note summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+.note ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+
+.overlay { position: fixed; inset: 0; background: color-mix(in srgb, var(--ink) 45%, transparent); display: grid; place-items: center; z-index: 20;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal { background: var(--surface); border-radius: 16px; padding: 20px; width: min(560px, 100%); max-height: 100%; overflow: auto; display: grid; gap: 14px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 480px) { .grid2, .grid3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted); }
+label.full { grid-column: 1 / -1; }
+.err { color: var(--hot); font-size: 13px; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg);
+  padding: 10px 16px; border-radius: 10px; font-size: 14px; z-index: 30; }
+@media (prefers-reduced-motion: no-preference) { .post { transition: border-color .2s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">TikTok · Instagram · Facebook · Threads</div>
+      <h1>Pemerhati Viral</h1>
+      <p>Simpan post yang anda nampak sedang naik, kemas kini angkanya dari semasa ke semasa, dan lihat mana satu benar-benar meletup.</p>
+    </div>
+    <div class="actions">
+      <button id="btn-ideas" type="button" hidden>Idea kandungan AI</button>
+      <button id="btn-add" class="primary" type="button">+ Tambah post</button>
+    </div>
+  </header>
+
+  <section class="summary" aria-label="Ringkasan">
+    <div class="tile"><span class="eyebrow">Dipantau</span><span class="val" id="s-total">0</span><span class="note">post</span></div>
+    <div class="tile"><span class="eyebrow">Meletup</span><span class="val" id="s-hot" style="color:var(--hot)">0</span><span class="note">skor 70 ke atas</span></div>
+    <div class="tile"><span class="eyebrow">Paling laju</span><span class="val" id="s-vel">0</span><span class="note">tontonan sejam</span></div>
+    <div class="tile"><span class="eyebrow">Purata penglibatan</span><span class="val" id="s-er">0%</span><span class="note">berwajaran</span></div>
+  </section>
+
+  <section class="panel" aria-labelledby="kw-h">
+    <div class="toolbar">
+      <h2 id="kw-h">Kata kunci niche saya</h2>
+      <form class="kw-form" id="kw-form">
+        <input id="kw-input" placeholder="cth. kurus, sarapan sihat, herbalife" aria-label="Kata kunci baru">
+        <button type="submit">Tambah</button>
+      </form>
+    </div>
+    <div class="row" id="kw-list"></div>
+    <div class="note">Post yang caption atau topiknya mengandungi kata kunci ini ditanda supaya mudah nampak.</div>
+  </section>
+
+  <section style="display:grid;gap:12px">
+    <div class="toolbar">
+      <div class="row" id="filters" role="group" aria-label="Tapis platform"></div>
+      <label style="display:flex;align-items:center;gap:8px">Susun
+        <select id="sort">
+          <option value="score">Skor viral</option>
+          <option value="vel">Paling laju</option>
+          <option value="er">Penglibatan</option>
+          <option value="new">Terbaru dipantau</option>
+        </select>
+      </label>
+    </div>
+    <div class="feed" id="feed"><div class="empty">Memuatkan senarai…</div></div>
+  </section>
+
+  <details class="note panel">
+    <summary>Cara skor viral dikira</summary>
+    <ul>
+      <li><b>Kelajuan</b> = tontonan bertambah sejam. Bila ada dua bacaan atau lebih, kiraan guna beza antara dua bacaan terakhir. Kalau satu bacaan sahaja, guna jumlah tontonan dibahagi jam sejak post.</li>
+      <li><b>Penglibatan</b> = (suka + komen×2 + kongsi×3 + simpan×2) ÷ tontonan. Kongsi diberi wajaran paling tinggi sebab itu yang membawa post keluar dari pengikut sendiri.</li>
+      <li><b>Skor</b> = 60% kelajuan (50,000 tontonan sejam = penuh) + 40% penglibatan (15% = penuh). 70 ke atas: Meletup. 45 hingga 69: Sedang naik.</li>
+      <li>TikTok, Instagram, Facebook dan Threads tidak membuka data trending kepada umum, jadi angka dimasukkan sendiri dari post. Kemas kini setiap beberapa jam untuk lihat lengkung pertumbuhan.</li>
+    </ul>
+  </details>
+</div>
+
+<div class="overlay" id="modal" hidden>
+  <form class="modal" id="post-form" novalidate>
+    <h2 id="modal-title">Tambah post</h2>
+    <div class="grid2" id="identity-fields">
+      <label>Platform
+        <select id="f-platform">
+          <option value="tiktok">TikTok</option><option value="instagram">Instagram</option>
+          <option value="facebook">Facebook</option><option value="threads">Threads</option>
+        </select>
+      </label>
+      <label>Akaun<input id="f-author" placeholder="@namaakaun"></label>
+      <label class="full">Topik / caption ringkas<input id="f-topic" placeholder="cth. Sarapan 5 minit untuk turun berat"></label>
+      <label class="full">Pautan post<input id="f-url" type="url" placeholder="https://"></label>
+      <label class="full">Masa dipost<input id="f-posted" type="datetime-local"></label>
+    </div>
+    <div class="grid3">
+      <label>Tontonan / capaian<input id="f-views" inputmode="numeric" placeholder="0"></label>
+      <label>Suka<input id="f-likes" inputmode="numeric" placeholder="0"></label>
+      <label>Komen<input id="f-comments" inputmode="numeric" placeholder="0"></label>
+      <label>Kongsi<input id="f-shares" inputmode="numeric" placeholder="0"></label>
+      <label>Simpan<input id="f-saves" inputmode="numeric" placeholder="0"></label>
+    </div>
+    <div class="note">Angka boleh ditulis seperti 1.2K atau 3.4M.</div>
+    <div class="err" id="f-err" hidden></div>
+    <div class="row" style="justify-content:flex-end">
+      <button type="button" id="f-cancel">Batal</button>
+      <button type="submit" class="primary" id="f-save">Simpan</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  const PLAT = { tiktok: "TikTok", instagram: "Instagram", facebook: "Facebook", threads: "Threads" };
+  const state = { posts: [], keywords: [], filter: "all", sort: "score", db: null, sample: null, editing: null, ai: {} };
+  const $ = (id) => document.getElementById(id);
+
+  function h(tag, attrs = {}, ...kids) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid);
+    return el;
+  }
+  function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 2600); }
+
+  const parseNum = (s) => {
+    if (s == null) return 0;
+    const m = String(s).trim().toLowerCase().replace(/,/g, "").match(/^([\d.]+)\s*([kmb]|j|rb)?$/);
+    if (!m) return NaN;
+    const mult = { k: 1e3, rb: 1e3, m: 1e6, j: 1e6, b: 1e9 }[m[2]] || 1;
+    return Math.round(parseFloat(m[1]) * mult);
+  };
+  const fmt = (n) => n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1) + "M" : n >= 1e3 ? (n / 1e3).toFixed(n >= 1e4 ? 0 : 1) + "K" : String(Math.round(n));
+  const clamp = (x) => Math.max(0, Math.min(100, x));
+
+  function metrics(p) {
+    const snaps = (p.snaps || []).slice().sort((a, b) => a.t - b.t);
+    const last = snaps[snaps.length - 1] || { t: Date.now(), views: 0, likes: 0, comments: 0, shares: 0, saves: 0 };
+    let vel;
+    if (snaps.length >= 2) {
+      const prev = snaps[snaps.length - 2];
+      vel = Math.max(0, (last.views - prev.views) / Math.max(0.25, (last.t - prev.t) / 3.6e6));
+    } else {
+      vel = last.views / Math.max(1, (last.t - (p.postedAt || last.t)) / 3.6e6);
+    }
+    const er = last.views > 0 ? (last.likes + 2 * last.comments + 3 * last.shares + 2 * last.saves) / last.views * 100 : 0;
+    const velScore = clamp(Math.log10(vel + 1) / Math.log10(50000) * 100);
+    const erScore = clamp(er / 15 * 100);
+    const score = Math.round(0.6 * velScore + 0.4 * erScore);
+    const status = score >= 70 ? ["hot", "Meletup"] : score >= 45 ? ["rise", "Sedang naik"] : ["cool", "Perlahan"];
+    return { snaps, last, vel, er, score, status };
+  }
+
+  function kwHits(p) {
+    const text = ((p.topic || "") + " " + (p.author || "")).toLowerCase();
+    return state.keywords.filter((k) => text.includes(k.toLowerCase()));
+  }
+
+  function spark(snaps) {
+    const W = 150, H = 40, pad = 4;
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("aria-hidden", "true");
+    if (snaps.length < 2) {
+      const t = document.createElementNS(svg.namespaceURI, "text");
+      t.setAttribute("x", W); t.setAttribute("y", H - 14); t.setAttribute("text-anchor", "end");
+      t.setAttribute("font-size", "11"); t.setAttribute("fill", "var(--muted)");
+      t.textContent = "Kemas kini untuk lihat graf";
+      svg.append(t); return svg;
+    }
+    const t0 = snaps[0].t, t1 = snaps[snaps.length - 1].t || t0 + 1;
+    const vmax = Math.max(...snaps.map((s) => s.views)) || 1, vmin = Math.min(...snaps.map((s) => s.views));
+    const pts = snaps.map((s) => [pad + (s.t - t0) / Math.max(1, t1 - t0) * (W - 2 * pad), H - pad - (s.views - vmin) / Math.max(1, vmax - vmin) * (H - 2 * pad)]);
+    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    const area = document.createElementNS(svg.namespaceURI, "path");
+    area.setAttribute("d", `${line} L${pts[pts.length - 1][0]} ${H - pad} L${pts[0][0]} ${H - pad} Z`);
+    area.setAttribute("fill", "var(--accent-soft)");
+    const path = document.createElementNS(svg.namespaceURI, "path");
+    path.setAttribute("d", line); path.setAttribute("fill", "none"); path.setAttribute("stroke", "var(--accent)"); path.setAttribute("stroke-width", "2");
+    const end = document.createElementNS(svg.namespaceURI, "circle");
+    end.setAttribute("cx", pts[pts.length - 1][0]); end.setAttribute("cy", pts[pts.length - 1][1]); end.setAttribute("r", "3.5"); end.setAttribute("fill", "var(--accent)");
+    svg.append(area, path, end);
+    return svg;
+  }
+
+  function render() {
+    // filters
+    const counts = { all: state.posts.length };
+    state.posts.forEach((p) => counts[p.platform] = (counts[p.platform] || 0) + 1);
+    $("filters").replaceChildren(...[["all", "Semua"], ...Object.entries(PLAT)].map(([k, label]) =>
+      h("button", { type: "button", class: "chip filter", "aria-pressed": String(state.filter === k), onclick: () => { state.filter = k; render(); } },
+        label, h("span", { class: "mono muted" }, String(counts[k] || 0)))));
+
+    // keywords
+    $("kw-list").replaceChildren(...(state.keywords.length ? state.keywords.map((k) =>
+      h("span", { class: "chip" }, k, h("button", { type: "button", "aria-label": "Buang " + k, onclick: () => saveKeywords(state.keywords.filter((x) => x !== k)) }, "×")))
+      : [h("span", { class: "note" }, "Belum ada kata kunci.")]));
+
+    const rows = state.posts.map((p) => ({ p, m: metrics(p), hits: kwHits(p) }));
+    // summary
+    $("s-total").textContent = rows.length;
+    $("s-hot").textContent = rows.filter((r) => r.m.score >= 70).length;
+    $("s-vel").textContent = rows.length ? fmt(Math.max(...rows.map((r) => r.m.vel))) : "0";
+    $("s-er").textContent = rows.length ? (rows.reduce((a, r) => a + r.m.er, 0) / rows.length).toFixed(1) + "%" : "0%";
+
+    const sorters = { score: (a, b) => b.m.score - a.m.score, vel: (a, b) => b.m.vel - a.m.vel, er: (a, b) => b.m.er - a.m.er, new: (a, b) => (b.p.createdAt || 0) - (a.p.createdAt || 0) };
+    const list = rows.filter((r) => state.filter === "all" || r.p.platform === state.filter).sort(sorters[state.sort]);
+
+    if (!state.db) return;
+    if (!list.length) {
+      $("feed").replaceChildren(h("div", { class: "empty" },
+        h("p", { style: "margin:0 0 10px;font-weight:600;color:var(--ink)" }, state.posts.length ? "Tiada post untuk platform ini." : "Belum ada post dipantau."),
+        h("p", { style: "margin:0 0 14px" }, "Jumpa post yang sedang naik? Salin angka tontonan, suka, komen dan kongsi ke sini."),
+        h("button", { type: "button", class: "primary", onclick: () => openForm() }, "+ Tambah post pertama")));
+      return;
+    }
+    $("feed").replaceChildren(...list.map(({ p, m, hits }) => {
+      const L = m.last;
+      const ai = state.ai[p.id];
+      return h("article", { class: "post" + (m.score >= 70 ? " hot" : "") },
+        h("div", { class: "score" }, h("span", { class: "num", style: `color:var(--${m.status[0]})` }, String(m.score)), h("span", { class: "pill " + m.status[0] }, m.status[1])),
+        h("div", { class: "meta" },
+          h("div", { class: "top" },
+            h("span", { class: "plat " + p.platform }, PLAT[p.platform] || p.platform),
+            p.author ? h("span", { class: "muted" }, p.author) : null,
+            p.example ? h("span", { class: "pill ex" }, "Contoh") : null,
+            ...hits.map((k) => h("span", { class: "kwhit" }, k))),
+          h("div", { class: "topic" }, p.topic || "(tiada topik)"),
+          h("div", { class: "stats mono" },
+            h("span", {}, h("b", {}, fmt(L.views)), " tontonan"),
+            h("span", {}, h("b", {}, fmt(L.likes)), " suka"),
+            h("span", {}, h("b", {}, fmt(L.comments)), " komen"),
+            h("span", {}, h("b", {}, fmt(L.shares)), " kongsi"),
+            h("span", {}, h("b", {}, fmt(L.saves)), " simpan"))),
+        h("div", { class: "side" },
+          spark(m.snaps),
+          h("span", { class: "mono", style: "font-size:13px" }, h("b", {}, fmt(m.vel)), h("span", { class: "muted" }, " /jam · " + m.er.toFixed(1) + "% libat"))),
+        h("div", { class: "post-actions" },
+          p.url && /^https?:\/\//.test(p.url) ? h("a", { class: "btn ghost", href: p.url, target: "_blank", rel: "noopener noreferrer", style: "border:0;color:var(--muted)" }, "Buka post ↗") : null,
+          h("button", { type: "button", class: "ghost", onclick: () => openForm(p) }, "Kemas kini angka"),
+          state.sample ? h("button", { type: "button", class: "ghost", disabled: ai && ai.loading, onclick: () => analyse(p, m) }, ai && ai.loading ? "Menganalisis…" : "Kenapa viral?") : null,
+          h("button", { type: "button", class: "ghost", onclick: (e) => confirmDelete(e.currentTarget, p) }, "Padam"),
+          h("span", { class: "note", style: "margin-left:auto;align-self:center" }, m.snaps.length + " bacaan")),
+        ai && ai.text ? h("div", { class: "ai-out" }, ai.text) : null);
+    }));
+  }
+
+  function confirmDelete(btn, p) {
+    if (btn.dataset.armed) { state.db.doc("posts/" + p.id).delete().then(() => toast("Post dipadam")).catch(() => toast("Tidak dapat padam. Cuba lagi.")); return; }
+    btn.dataset.armed = "1"; btn.textContent = "Tekan sekali lagi untuk padam"; btn.style.color = "var(--hot)";
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = "Padam"; btn.style.color = ""; } }, 4000);
+  }
+
+  // ---- form ----
+  const toLocal = (ms) => { const d = new Date(ms - new Date().getTimezoneOffset() * 6e4); return d.toISOString().slice(0, 16); };
+  function openForm(p) {
+    state.editing = p || null;
+    $("modal-title").textContent = p ? "Kemas kini angka" : "Tambah post";
+    $("identity-fields").hidden = !!p;
+    $("f-err").hidden = true;
+    const L = p ? metrics(p).last : null;
+    if (!p) { $("f-author").value = ""; $("f-topic").value = ""; $("f-url").value = ""; $("f-posted").value = toLocal(Date.now() - 3 * 3.6e6); }
+    for (const k of ["views", "likes", "comments", "shares", "saves"]) $("f-" + k).value = L ? L[k] : "";
+    $("modal").hidden = false;
+    (p ? $("f-views") : $("f-topic")).focus();
+  }
+  $("btn-add").onclick = () => openForm();
+  $("f-cancel").onclick = () => $("modal").hidden = true;
+  $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) $("modal").hidden = true; });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("modal").hidden = true; });
+
+  $("post-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!state.db) return;
+    const snap = { t: Date.now() };
+    for (const k of ["views", "likes", "comments", "shares", "saves"]) {
+      const v = parseNum($("f-" + k).value || "0");
+      if (Number.isNaN(v)) { $("f-err").textContent = "Angka " + k + " tidak sah. Guna nombor seperti 1200 atau 1.2K."; $("f-err").hidden = false; return; }
+      snap[k] = v;
+    }
+    if (!snap.views) { $("f-err").textContent = "Masukkan jumlah tontonan atau capaian supaya skor boleh dikira."; $("f-err").hidden = false; return; }
+    $("f-save").disabled = true;
+    try {
+      if (state.editing) {
+        const snaps = [...(state.editing.snaps || []), snap].slice(-30);
+        await state.db.doc("posts/" + state.editing.id).update({ snaps });
+        toast("Angka dikemas kini");
+      } else {
+        const topic = $("f-topic").value.trim();
+        if (!topic) { $("f-err").textContent = "Tulis topik atau caption ringkas."; $("f-err").hidden = false; return; }
+        const posted = new Date($("f-posted").value).getTime();
+        await state.db.collection("posts").add({
+          platform: $("f-platform").value, author: $("f-author").value.trim().slice(0, 80), topic: topic.slice(0, 280),
+          url: $("f-url").value.trim().slice(0, 500), postedAt: Number.isFinite(posted) ? Math.min(posted, Date.now()) : Date.now(),
+          createdAt: Date.now(), snaps: [snap]
+        });
+        toast("Post ditambah");
+      }
+      $("modal").hidden = true;
+    } catch (err) {
+      $("f-err").textContent = err && err.code === "not_granted" ? "Anda tiada kebenaran menulis pada halaman ini." : "Tidak dapat simpan. Semak sambungan dan cuba lagi.";
+      $("f-err").hidden = false;
+    } finally { $("f-save").disabled = false; }
+  });
+
+  // ---- keywords ----
+  async function saveKeywords(list) {
+    state.keywords = list; render();
+    try { await state.db.doc("config/settings").set({ keywords: list }); } catch { toast("Kata kunci tidak dapat disimpan"); }
+  }
+  $("kw-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const add = $("kw-input").value.split(",").map((s) => s.trim()).filter(Boolean);
+    if (!add.length || !state.db) return;
+    saveKeywords([...new Set([...state.keywords, ...add])].slice(0, 30));
+    $("kw-input").value = "";
+  });
+
+  $("sort").onchange = (e) => { state.sort = e.target.value; try { localStorage.setItem("pv-sort", state.sort); } catch {} render(); };
+  try { const s = localStorage.getItem("pv-sort"); if (s) { state.sort = s; $("sort").value = s; } } catch {}
+
+  // ---- AI ----
+  const describe = (p, m) => `Platform: ${PLAT[p.platform]}; akaun: ${p.author || "-"}; topik/caption: "${p.topic}"; tontonan ${m.last.views}, suka ${m.last.likes}, komen ${m.last.comments}, kongsi ${m.last.shares}, simpan ${m.last.saves}; kelajuan ${Math.round(m.vel)} tontonan sejam; penglibatan berwajaran ${m.er.toFixed(1)}%; skor viral ${m.score}/100.`;
+  async function analyse(p, m) {
+    state.ai[p.id] = { loading: true, text: "" }; render();
+    const prompt = `Anda pakar strategi kandungan media sosial di Malaysia. Data post (dimasukkan pengguna, mungkin tidak lengkap):\n${describe(p, m)}\n` +
+      (state.keywords.length ? `Niche pengguna: ${state.keywords.join(", ")}.\n` : "") +
+      `Dalam Bahasa Melayu santai, tanpa markdown dan tanpa emoji, beri:\n1. Dua atau tiga sebab ringkas kenapa post ini berprestasi begini (rujuk angka).\n2. Tiga idea hook pembukaan (ayat pertama video/post) yang meniru corak ini untuk niche pengguna.\n3. Satu cadangan masa atau cara posting.\nMaksimum 160 patah perkataan.`;
+    try {
+      await state.sample(prompt, { modelTier: "quick", onText: ({ text }) => { state.ai[p.id] = { loading: true, text }; render(); } })
+        .then((r) => { state.ai[p.id] = { loading: false, text: r.text }; });
+    } catch (err) {
+      state.ai[p.id] = { loading: false, text: err && err.code === "rate_limited" ? "Terlalu banyak permintaan. Cuba lagi sebentar." : err && err.code === "not_granted" ? "" : "Analisis tidak dapat dibuat sekarang." };
+      if (err && err.code === "not_granted") { state.sample = null; $("btn-ideas").hidden = true; }
+    }
+    render();
+  }
+
+  $("btn-ideas").onclick = async () => {
+    const top = state.posts.map((p) => ({ p, m: metrics(p) })).sort((a, b) => b.m.score - a.m.score).slice(0, 8);
+    if (!top.length) { toast("Tambah sekurang-kurangnya satu post dahulu"); return; }
+    const btn = $("btn-ideas"); btn.disabled = true; btn.textContent = "Sedang fikir…";
+    const id = "__ideas"; state.ai[id] = { text: "" };
+    let box = document.getElementById("ideas-box");
+    if (!box) { box = h("section", { class: "panel", id: "ideas-box" }, h("h2", {}, "Idea kandungan daripada trend anda"), h("div", { class: "ai-out", id: "ideas-text" }, "…")); $("feed").parentElement.before(box); }
+    const prompt = `Anda pakar strategi kandungan media sosial di Malaysia. Ini post paling viral yang pengguna pantau:\n${top.map((r, i) => (i + 1) + ". " + describe(r.p, r.m)).join("\n")}\n` +
+      (state.keywords.length ? `Niche pengguna: ${state.keywords.join(", ")}.\n` : "") +
+      `Dalam Bahasa Melayu santai, tanpa markdown dan tanpa emoji: kenal pasti 2 hingga 3 corak yang sama antara post ini, kemudian beri 5 idea kandungan konkrit (setiap satu: hook ayat pertama + format + platform paling sesuai). Maksimum 250 patah perkataan.`;
+    try {
+      const r = await state.sample(prompt, { modelTier: "default", onText: ({ text }) => { $("ideas-text").textContent = text; } });
+      $("ideas-text").textContent = r.text;
+    } catch (err) {
+      $("ideas-text").textContent = err && err.code === "rate_limited" ? "Terlalu banyak permintaan. Cuba lagi sebentar." : "Idea tidak dapat dijana sekarang.";
+    } finally { btn.disabled = false; btn.textContent = "Idea kandungan AI"; }
+  };
+
+  // ---- boot ----
+  render();
+  (async () => {
+    const timer = setTimeout(() => { if (!state.db) $("feed").replaceChildren(h("div", { class: "empty" }, "Senarai tidak dapat dimuatkan. Buka halaman ini di claude.ai dan pastikan anda log masuk.")); }, 10000);
+    const db = window.claude && await window.claude.use("db");
+    clearTimeout(timer);
+    if (!db) { $("feed").replaceChildren(h("div", { class: "empty" }, "Senarai tidak dapat dimuatkan. Buka halaman ini di claude.ai dan pastikan anda log masuk.")); $("btn-add").disabled = true; return; }
+    state.db = db;
+    db.collection("posts").onSnapshot((snap) => {
+      state.posts = snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter((p) => p.platform && Array.isArray(p.snaps));
+      render();
+    }, () => $("feed").replaceChildren(h("div", { class: "empty" }, "Ralat memuatkan data. Muat semula halaman.")));
+    db.doc("config/settings").onSnapshot((d) => { const k = d.exists && d.data().keywords; state.keywords = Array.isArray(k) ? k.filter((x) => typeof x === "string") : []; render(); });
+  })();
+  (async () => {
+    const s = window.claude && await window.claude.use("sample");
+    if (s) { state.sample = s; $("btn-ideas").hidden = false; render(); }
+  })();
+})();
+</script>
