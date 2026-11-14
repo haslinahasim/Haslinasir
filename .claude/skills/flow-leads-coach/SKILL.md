@@ -50,7 +50,7 @@ Betul ya cik?
 *Hantar bila: serta-merta selepas Mesej 1, dalam bubble berasingan. Tujuan: minta tinggi, berat, umur.*
 
 ```
-Amazing, cik boleh share Tinggi, Berat & Umur? saya buat anggaran dulu berapa kg perlu turun ya
+kalau tak keberatan , cik boleh share Tinggi, Berat & Umur? saya buat anggaran dulu berapa kg perlu turun ya
 ```
 
 ### Mesej 3
