@@ -154,6 +154,7 @@ CARD_END = end_card(C["end"])
 
 # ---------- person cutout ----------
 sess = ort.InferenceSession(os.path.expanduser("~/easy-edit/models/modnet.onnx")); prev = None
+STUDIO_VF = "curves=master='0/0 0.25/0.30 0.5/0.57 0.75/0.81 1/1',colorbalance=rs=-0.03:bs=0.02:rm=-0.03:bm=0.03,eq=contrast=1.05:saturation=1.04"
 def matte(rgb):
     global prev
     x = np.asarray(Image.fromarray(rgb).resize((288, 512), Image.BILINEAR), np.float32) / 127.5 - 1
@@ -163,16 +164,35 @@ def matte(rgb):
 
 # ---------- render ----------
 dec = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-i", SRC, "-t", str(DUR), "-vf",
-    f"fps={FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},eq=contrast=1.04:saturation=1.08:brightness=0.01",
+    f"fps={FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}," + (STUDIO_VF if C.get("studio") else "eq=contrast=1.04:saturation=1.08:brightness=0.01"),
     "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
 enc = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
     "-i", SRC, "-map", "0:v", "-map", "1:a", "-af", f"atrim=0:{DUR},apad", "-t", str(DUR + END),
     "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", OUT], stdin=subprocess.PIPE)
 n, last, bigy = 0, None, hk.get("y")
+# ---------- studio light: brighter subject + soft key light on face, darker background, gentle vignette ----------
+YY, XX = np.mgrid[0:H, 0:W].astype(np.float32)
+VIG = (1 - 0.18 * np.clip(((XX - W / 2) / (W * 0.75)) ** 2 + ((YY - H * 0.45) / (H * 0.7)) ** 2, 0, 1))[..., None]
+kc = None
+def studio(rgb, m):
+    global kc
+    mk = np.asarray(m) > 128; rows = np.where(mk.sum(1) > 40)[0]
+    if len(rows):
+        top = rows.min(); cols = np.where(mk[top:top + 250].any(0))[0]
+        c = np.array([cols.mean() if len(cols) else W / 2, top + 230.0])
+        kc = c if kc is None else 0.85 * kc + 0.15 * c
+    cx, cy = kc if kc is not None else (W / 2, 700)
+    key = np.exp(-(((XX - cx) / 420) ** 2 + ((YY - cy) / 520) ** 2))[..., None]
+    a = np.asarray(m.filter(ImageFilter.GaussianBlur(6)), np.float32)[..., None] / 255
+    f = rgb.astype(np.float32)
+    out = (f * (1.06 + 0.10 * key)) * a + f * 0.90 * (1 - a)
+    return np.clip(out * VIG, 0, 255).astype(np.uint8)
 while True:
     raw = dec.stdout.read(W * H * 3)
     if len(raw) < W * H * 3: break
-    t = n / FPS; rgb = np.frombuffer(raw, np.uint8).reshape(H, W, 3); frame = Image.fromarray(rgb).convert("RGBA"); m = matte(rgb)
+    t = n / FPS; rgb = np.frombuffer(raw, np.uint8).reshape(H, W, 3); m = matte(rgb)
+    if C.get("studio"): rgb = studio(rgb, m)
+    frame = Image.fromarray(rgb).convert("RGBA")
     if bigy is None:   # put the big word across the top of her head
         rows = np.where((np.asarray(m) > 128).sum(1) > 40)[0]; bigy = int(rows.min() + C["hook"].get("overlap", 60) - BIG.height / 2 + 75) if len(rows) else 470
     bg = frame.copy()
