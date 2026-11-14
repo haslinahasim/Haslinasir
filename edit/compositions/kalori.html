@@ -1,0 +1,47 @@
+<template>
+  <style>
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .wrap { position: absolute; left: 48px; right: 48px; top: 176px; height: 220px; opacity: 0;
+            font-family: "Inter", sans-serif; color: #1c1c1e; display: flex; gap: 16px; align-items: flex-start; }
+    .card { flex: 1; background: rgba(255, 255, 255, 0.66); border: 1.5px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px; padding: 18px 28px 20px; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12); }
+    .title { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px;
+             display: flex; justify-content: space-between; align-items: baseline; }
+    .title small { font-size: 28px; font-weight: 400; color: #6f6a64; }
+    .muted { color: #6f6a64; }
+    .tick { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(28, 28, 30, 0.25); flex: none;
+            display: flex; align-items: center; justify-content: center; }
+    .tick svg { width: 24px; height: 24px; opacity: 0; }
+
+    .hb { display: flex; align-items: center; height: 54px; font-size: 32px; }
+    .hl { width: 150px; flex: none; color: #6f6a64; }
+    .hv { width: 120px; flex: none; text-align: right; font-weight: 700; }
+    .track { position: relative; flex: 1; height: 32px; }
+    .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 10px; transform-origin: 0 50%; }
+    .fill.in { width: 80%; background: #b9ab98; }
+    .fill.out { width: 100%; background: #1e63d6; }
+    .gap { position: absolute; left: 80%; width: 20%; top: -4px; bottom: -4px; border: 3px dashed #d9576b; border-radius: 10px;
+           color: #d9576b; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="kalori" data-width="1080" data-height="1920">
+    <div id="kalori-wrap" class="wrap">
+      <div class="card"><div class="title">defisit kalori <small>contoh sehari</small></div>
+        <div class="hb"><span class="hl">makan</span><div class="track"><div id="kl-in" class="fill in"></div><div id="kl-gap" class="gap">&minus;400</div></div><span class="hv">1,600</span></div>
+        <div class="hb"><span class="hl">dibakar</span><div class="track"><div id="kl-out" class="fill out"></div></div><span class="hv">2,000</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const D = 3.15;
+    tl.fromTo("#kalori-wrap", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0);
+    tl.to("#kalori-wrap", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);
+    tl.fromTo("#kl-in", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 0.15);
+    tl.fromTo("#kl-out", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 0.60);
+    tl.fromTo("#kl-gap", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.08);
+    window.__timelines["kalori"] = tl;
+  </script>
+</template>

@@ -1,0 +1,45 @@
+<template>
+  <style>
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .wrap { position: absolute; left: 48px; right: 48px; top: 176px; height: 220px; opacity: 0;
+            font-family: "Inter", sans-serif; color: #1c1c1e; display: flex; gap: 16px; align-items: flex-start; }
+    .card { flex: 1; background: rgba(255, 255, 255, 0.66); border: 1.5px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px; padding: 18px 28px 20px; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12); }
+    .title { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px;
+             display: flex; justify-content: space-between; align-items: baseline; }
+    .title small { font-size: 28px; font-weight: 400; color: #6f6a64; }
+    .muted { color: #6f6a64; }
+    .tick { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(28, 28, 30, 0.25); flex: none;
+            display: flex; align-items: center; justify-content: center; }
+    .tick svg { width: 24px; height: 24px; opacity: 0; }
+
+    .eq { display: flex; gap: 18px; }
+    .term { flex: 1; display: flex; flex-direction: column; font-size: 28px; opacity: 0; }
+    .term b { font-size: 44px; line-height: 1.2; }
+    .term.res { border-left: 3px solid rgba(28, 28, 30, 0.6); padding-left: 18px; }
+    .neg { color: #1e63d6; }
+    .pos { color: #d9576b; }
+  </style>
+  <div id="root" data-composition-id="senam" data-width="1080" data-height="1920">
+    <div id="senam-wrap" class="wrap">
+      <div class="card"><div class="title">bakar, lepas tu tambah</div><div class="eq">
+        <div id="sn-0" class="term"><span class="muted">bersenam</span><b class="neg">&minus;300</b></div>
+        <div id="sn-1" class="term"><span class="muted">tambah makan</span><b>+450</b></div>
+        <div id="sn-2" class="term res"><span class="muted">hasilnya</span><b class="pos">+150 kcal</b></div>
+      </div></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const D = 3.6;
+    tl.fromTo("#senam-wrap", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0);
+    tl.to("#senam-wrap", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);
+    tl.fromTo("#sn-0", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 0.15);
+    tl.fromTo("#sn-1", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 2.45);
+    tl.fromTo("#sn-2", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 2.97);
+    window.__timelines["senam"] = tl;
+  </script>
+</template>

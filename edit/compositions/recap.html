@@ -1,0 +1,47 @@
+<template>
+  <style>
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .wrap { position: absolute; left: 48px; right: 48px; top: 176px; height: 220px; opacity: 0;
+            font-family: "Inter", sans-serif; color: #1c1c1e; display: flex; gap: 16px; align-items: flex-start; }
+    .card { flex: 1; background: rgba(255, 255, 255, 0.66); border: 1.5px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px; padding: 18px 28px 20px; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12); }
+    .title { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px;
+             display: flex; justify-content: space-between; align-items: baseline; }
+    .title small { font-size: 28px; font-weight: 400; color: #6f6a64; }
+    .muted { color: #6f6a64; }
+    .tick { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(28, 28, 30, 0.25); flex: none;
+            display: flex; align-items: center; justify-content: center; }
+    .tick svg { width: 24px; height: 24px; opacity: 0; }
+
+    .list { display: flex; gap: 28px; }
+    .it { display: flex; align-items: center; gap: 12px; font-size: 32px; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="recap" data-width="1080" data-height="1920">
+    <div id="recap-wrap" class="wrap">
+      <div class="card"><div class="title">3 perkara penting</div><div class="list">
+        <div class="it"><div id="rc-t0" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span id="rc-x0">ada rutin</span></div>
+        <div class="it"><div id="rc-t1" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span id="rc-x1">bakar &amp; defisit kalori</span></div>
+        <div class="it"><div id="rc-t2" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span id="rc-x2">komitmen</span></div>
+      </div></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const D = 7.55;
+    tl.fromTo("#recap-wrap", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0);
+    tl.to("#recap-wrap", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);
+    tl.set("#rc-t0", { backgroundColor: "#1e63d6", borderColor: "#1e63d6" }, 1.25);
+    tl.fromTo("#rc-t0 svg", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 1.25);
+    tl.fromTo("#rc-x0", { color: "#6f6a64" }, { color: "#1c1c1e", duration: 0.2 }, 1.25);
+    tl.set("#rc-t1", { backgroundColor: "#1e63d6", borderColor: "#1e63d6" }, 3.87);
+    tl.fromTo("#rc-t1 svg", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 3.87);
+    tl.fromTo("#rc-x1", { color: "#6f6a64" }, { color: "#1c1c1e", duration: 0.2 }, 3.87);
+    tl.set("#rc-t2", { backgroundColor: "#1e63d6", borderColor: "#1e63d6" }, 6.52);
+    tl.fromTo("#rc-t2 svg", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 6.52);
+    tl.fromTo("#rc-x2", { color: "#6f6a64" }, { color: "#1c1c1e", duration: 0.2 }, 6.52);
+    window.__timelines["recap"] = tl;
+  </script>
+</template>

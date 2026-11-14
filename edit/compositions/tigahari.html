@@ -1,0 +1,51 @@
+<template>
+  <style>
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-400.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-700.woff2") format("woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .wrap { position: absolute; left: 48px; right: 48px; top: 176px; height: 220px; opacity: 0;
+            font-family: "Inter", sans-serif; color: #1c1c1e; display: flex; gap: 16px; align-items: flex-start; }
+    .card { flex: 1; background: rgba(255, 255, 255, 0.66); border: 1.5px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px; padding: 18px 28px 20px; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12); }
+    .title { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px;
+             display: flex; justify-content: space-between; align-items: baseline; }
+    .title small { font-size: 28px; font-weight: 400; color: #6f6a64; }
+    .muted { color: #6f6a64; }
+    .tick { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(28, 28, 30, 0.25); flex: none;
+            display: flex; align-items: center; justify-content: center; }
+    .tick svg { width: 24px; height: 24px; opacity: 0; }
+
+    .week { display: flex; justify-content: space-between; padding: 0 10px; }
+    .day { text-align: center; }
+    .day .tick { width: 60px; height: 60px; }
+    .day .tick svg { width: 32px; height: 32px; }
+    .dn { margin-top: 6px; font-size: 28px; color: #6f6a64; }
+  </style>
+  <div id="root" data-composition-id="tigahari" data-width="1080" data-height="1920">
+    <div id="tigahari-wrap" class="wrap">
+      <div class="card"><div class="title">tiga hari je <small>diet sorang-sorang</small></div><div class="week">
+          <div class="day"><div id="kd-0" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">isn</div></div>
+          <div class="day"><div id="kd-1" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">sel</div></div>
+          <div class="day"><div id="kd-2" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">rab</div></div>
+          <div class="day"><div id="kd-3" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">kha</div></div>
+          <div class="day"><div id="kd-4" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">jum</div></div>
+          <div class="day"><div id="kd-5" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">sab</div></div>
+          <div class="day"><div id="kd-6" class="tick"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="dn">ahd</div></div>
+      </div></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const D = 2.77;
+    tl.fromTo("#tigahari-wrap", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0);
+    tl.to("#tigahari-wrap", { opacity: 0, duration: 0.2, ease: "power2.in" }, D - 0.2);
+    tl.set("#kd-0", { backgroundColor: "#1e63d6", borderColor: "#1e63d6" }, 1.56);
+    tl.fromTo("#kd-0 svg", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 1.56);
+    tl.set("#kd-1", { backgroundColor: "#1e63d6", borderColor: "#1e63d6" }, 1.85);
+    tl.fromTo("#kd-1 svg", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 1.85);
+    tl.set("#kd-2", { backgroundColor: "#1e63d6", borderColor: "#1e63d6" }, 2.15);
+    tl.fromTo("#kd-2 svg", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 2.15);
+    window.__timelines["tigahari"] = tl;
+  </script>
+</template>
