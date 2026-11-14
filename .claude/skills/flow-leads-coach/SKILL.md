@@ -34,16 +34,16 @@ Ini satu-satunya tempat teks mesej disimpan — tiada salinan lain dalam fail ni
 *Hantar bila: lead baru, chat kosong. Tujuan: kenalkan diri, sahkan dia yang isi borang.*
 
 ```
-Hi Cik, saya Coach Hana dari Team FitHabits - Herbalife 😊
+Hi Cik, saya Coach Haslina dari Team Powerfit Malaysia - Herbalife 😊
 
 Saya nampak cik ada isi borang/dm sy selepas join Live TikTok saya tadi untuk dapatkan info tentang produk Herbalife/program diet.
 
 Betul ya cik?
 ```
 
-> **WAJIB TUKAR:** "Coach Hana dari Team FitHabits" ialah nama coach asal yang tulis flow ni.
-> Ganti dengan nama dan team dari setup **sebelum hantar kepada sesiapa**.
-> Kalau setup belum jalan, jangan hantar Mesej 1.
+> **Dah ditukar dalam setup:** nama coach asal ("Coach Hana dari Team FitHabits") diganti dengan
+> "Coach Haslina dari Team Powerfit Malaysia".
+> Kalau setup belum habis (tiada `SETUP.md`), jangan hantar Mesej 1.
 > Baris "join Live TikTok saya" tak perlu diubah — coach ni pun buat Live TikTok.
 
 ### Mesej 2
