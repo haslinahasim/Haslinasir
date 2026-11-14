@@ -120,16 +120,16 @@ def end_card(e):
 
 # ---------- captions: word timed, display text per word, accent words gold serif ----------
 words = json.load(open(C["words"])); fix = {int(k): v for k, v in C.get("fix", {}).items()}
-acc = set(C.get("accent", [])); fw, fa = F(XB, 58), F(SERIF, 66)
+acc = set(C.get("accent", [])); CS = C.get("cap_size", 58); fw, fa = F(XB, CS), F(SERIF, int(CS * 1.14))
 def disp(i): return fix.get(i, words[i]["w"].lstrip("-"))
 def cap_img(idx):
     d = ImageDraw.Draw(Image.new("RGBA", (1, 1))); parts = [(disp(i), fa if i in acc else fw, CREAM if i in acc else WHITE) for i in idx if disp(i)]
     sp = 16; tw = sum(d.textlength(t, font=f) for t, f, _ in parts) + sp * (len(parts) - 1)
-    im = Image.new("RGBA", (int(tw) + 60, 130), (0, 0, 0, 0)); sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    im = Image.new("RGBA", (int(tw) + 60, int(CS * 2.25)), (0, 0, 0, 0)); sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
     ds, dd = ImageDraw.Draw(sh), ImageDraw.Draw(im); x = 30
     for t, f, c in parts:
-        ds.text((x, 67), t, font=f, fill=(0, 0, 0, 255), anchor="ls", stroke_width=4, stroke_fill=(0, 0, 0, 255))
-        dd.text((x, 65), t, font=f, fill=c, anchor="ls", stroke_width=2, stroke_fill=(0, 0, 0, 140)); x += d.textlength(t, font=f) + sp
+        ds.text((x, int(CS * 1.15) + 2), t, font=f, fill=(0, 0, 0, 255), anchor="ls", stroke_width=4, stroke_fill=(0, 0, 0, 255))
+        dd.text((x, int(CS * 1.15)), t, font=f, fill=c, anchor="ls", stroke_width=2, stroke_fill=(0, 0, 0, 140)); x += d.textlength(t, font=f) + sp
     return Image.alpha_composite(sh.filter(ImageFilter.GaussianBlur(5)), im)
 CAPS, G = [], C["groups"]
 for gi, (a, b) in enumerate(G):
@@ -141,7 +141,9 @@ for gi, (a, b) in enumerate(G):
         CAPS.append((words[k]["s"], words[nk]["s"] if nk else g_end, cap_img(range(a, k + 1))))
 
 # ---------- build timed layers ----------
-hk = C["hook"]; BIG = text_img(hk["big"], F(BLK, hk.get("size", 150)), YEL); KICK = text_img(hk["kicker"], F(XB, 50), WHITE, shadow=True)
+hk = C["hook"]; BIG = text_img(hk["big"], F(BLK, hk.get("size", 150)), YEL); ks = 50
+while ks > 30 and ImageDraw.Draw(Image.new("RGBA", (1, 1))).textlength(hk["kicker"], font=F(XB, ks)) > 980: ks -= 2
+KICK = text_img(hk["kicker"], F(XB, ks), WHITE, shadow=True)
 WALLS = [(w["a"], w["b"], wall(w["word"], COL[w["color"]])) for w in C.get("walls", [])]
 CARDS = []
 for c in C.get("cards", []):
