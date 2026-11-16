@@ -42,6 +42,12 @@ def title_img():
     shadow_text(im, (W / 2, 280), "LEMAK PERUT", F(BLK, 92), (255, 214, 10))
     return im
 
+EMO = {'Char Kuey Teow': '🍜', 'Nasi Kandar': '🍛', 'Roti Tisu': '🔺', 'Maggi Goreng': '🍝', 'Teh Tarik': '🧋', 'Milo Ais': '🥤', 'Roti Canai': '🫓', 'Nasi Lemak': '🍚', 'Nasi Ayam': '🍗', 'Satay': '🍢', 'Roti Telur': '🍳', 'Wantan Mee': '🥟', 'Thosai': '🌯', 'Capati': '🫓', 'Yong Tau Foo': '🥢', 'Sup Ayam': '🍲', 'Ayam Tandoori': '🍗', 'Ikan Bakar': '🐟', 'Telur Separuh Masak': '🥚', 'Teh O Kosong': '☕'}
+EF = ImageFont.truetype("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf", 109)
+def emoji(ch, size):
+    im = Image.new("RGBA", (140, 140), (0, 0, 0, 0)); ImageDraw.Draw(im).text((70, 70), ch, font=EF, embedded_color=True, anchor="mm")
+    return im.crop(im.getbbox()).resize((size, size), Image.LANCZOS)
+
 def row_img(name, col, tcol, foods):
     rh = 200; im = Image.new("RGBA", (W, rh + 20), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     d.rounded_rectangle([40, 10, 300, 10 + rh], 26, fill=col, outline=(0, 0, 0), width=4)
@@ -50,9 +56,10 @@ def row_img(name, col, tcol, foods):
     for i, food in enumerate(foods):
         cx, cy = 320 + (i % 2) * 365, 10 + (i // 2) * 103
         d.rounded_rectangle([cx, cy, cx + 350, cy + 94], 20, fill=(15, 15, 20, 215), outline=col + (255,), width=3)
-        f = F(XB, 40)
-        while d.textlength(food, font=f) > 320: f = F(XB, f.size - 2)
-        d.text((cx + 175, cy + 47), food, font=f, fill=WHITE, anchor="mm")
+        im.alpha_composite(emoji(EMO[food], 66), (cx + 12, cy + 14))
+        f = F(XB, 38)
+        while d.textlength(food, font=f) > 250: f = F(XB, f.size - 2)
+        d.text((cx + 88 + 131, cy + 47), food, font=f, fill=WHITE, anchor="mm")
     return im
 
 TITLE = title_img(); ROWS = [row_img(*t) for t in TIERS]
