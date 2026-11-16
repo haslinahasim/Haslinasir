@@ -85,7 +85,7 @@ BIG = text_img("TEA MIX", F(BLK, 190), YEL, stroke=8)
 SUB = text_img("Herbalife", F(SERIF, 80), CREAM, stroke=3)
 STEPS = [(s[1] + 0.1, s[2], step("1", "Sediakan segelas air")), (s[2] + 0.1, s[3], step("2", "Masukkan Tea Mix")),
          (s[3] + 0.1, s[4], step("3", "Kacau sebati")), (s[4] + 0.1, DUR, step("4", "Siap! Jom minum", True))]
-BEN = [("Bertenaga & lebih fokus", False), ("Antioxidant", False), ("20 kalori sahaja", False), ("Enhance program turun berat", True)]
+BEN = [("Bertenaga & lebih fokus", False), ("Antioxidant", False), ("6 kalori sahaja", False), ("Enhance program turun berat", True)]
 BA, BT = s[3] + 0.2, [s[3] + 0.2, s[3] + 1.8, s[3] + 3.4, s[4] + 0.6]
 CARDS = [(BT[i], BT[i + 1] if i + 1 < len(BT) else DUR, list_card("FUNGSI TEA MIX", BEN, i + 1)) for i in range(len(BT))]
 ENDC = end_card(PROD)
