@@ -79,15 +79,17 @@ ROWS = [row(i, n, w) for i, (n, w) in enumerate(ITEMS)]
 
 def tip():
     im = Image.new("RGBA", (W, 760), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    d.text((W / 2, 60), "Ganti dengan sarapan", font=F(BD, 52), fill=GREY, anchor="mm")
-    d.text((W / 2, 150), "Tinggi Protein & Serat", font=F(SERIF, 92), fill=GOLD, anchor="mm")
-    d.line([(W / 2 - 70, 225), (W / 2 + 70, 225)], fill=RED, width=6)
-    for k, t in enumerate(["Telur", "Oat", "Roti wholemeal", "Buah-buahan"]):
-        y = 300 + k * 105
-        d.rounded_rectangle([230, y, W - 230, y + 84], 42, fill=(255, 255, 255, 18), outline=(255, 255, 255, 40), width=2)
-        d.ellipse([254, y + 18, 302, y + 66], fill=GRN); d.line([(266, y + 43), (275, y + 53), (291, y + 32)], fill=WHITE, width=6)
-        d.text((330, y + 42), t, font=F(XB, 46), fill=WHITE, anchor="lm")
-    d.text((W / 2, 745), "Kenyang lebih lama, tenaga lebih stabil", font=F(BD, 38), fill=GREY, anchor="mm")
+    d.text((W / 2, 70), "Nak tahu sarapan", font=F(BLK, 80), fill=WHITE, anchor="mm")
+    d.text((W / 2, 175), "yang bagus untuk diet?", font=F(SERIF, 84), fill=GOLD, anchor="mm")
+    d.line([(W / 2 - 70, 260), (W / 2 + 70, 260)], fill=RED, width=6)
+    d.text((W / 2, 360), "Komen", font=F(BD, 56), fill=GREY, anchor="mm")
+    glow = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(glow).rounded_rectangle([230, 420, W - 230, 580], 80, fill=(230, 30, 40, 200))
+    im.alpha_composite(glow.filter(ImageFilter.GaussianBlur(20))); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([240, 425, W - 240, 575], 75, fill=RED)
+    d.text((W / 2, 500), "\u201cPART 2\u201d", font=F(BLK, 96), fill=WHITE, anchor="mm")
+    # small comment bubble icon
+    d.rounded_rectangle([W / 2 - 50, 640, W / 2 + 50, 710], 20, fill=(255, 255, 255, 40)); d.polygon([(W / 2 - 20, 708), (W / 2 - 34, 735), (W / 2 + 2, 708)], fill=(255, 255, 255, 40))
+    for k in range(3): d.ellipse([W / 2 - 28 + k * 22, 669, W / 2 - 16 + k * 22, 681], fill=WHITE)
     return im
 TIP = tip()
 
