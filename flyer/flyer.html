@@ -1,0 +1,118 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16302A;--em:#0E4D3A;--em2:#13684E;--gold:#C9A227;--gold2:#E9C96A;--bg:#F3F5EF;--mut:#5B6B65}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1414px;height:2000px;background:var(--bg);font-family:Montserrat,sans-serif;color:var(--ink);overflow:hidden}
+header{background:linear-gradient(135deg,#0B3D2E 0%,#13684E 100%);color:#fff;padding:54px 70px 120px;position:relative}
+header:after{content:"";position:absolute;inset:auto 0 0 0;height:60px;background:var(--bg);border-radius:60px 60px 0 0}
+.kick{display:inline-block;border:2px solid var(--gold2);color:var(--gold2);font-weight:700;letter-spacing:5px;font-size:20px;padding:8px 22px;border-radius:40px}
+h1{font-family:'Playfair Display',serif;font-size:92px;line-height:1.02;margin:22px 0 14px}
+h1 span{color:var(--gold2)}
+.sub{font-size:24px;font-weight:500;opacity:.92;max-width:1000px;line-height:1.45}
+.sub b{color:var(--gold2)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:0 50px;margin-top:-60px;position:relative}
+.card{background:#fff;border-radius:26px;box-shadow:0 10px 30px rgba(14,77,58,.12);padding:30px 32px 28px;height:690px;display:flex;flex-direction:column;position:relative;border-top:10px solid var(--c)}
+.num{position:absolute;top:24px;right:28px;font-family:'Playfair Display',serif;font-size:64px;color:var(--c);opacity:.15;font-weight:800}
+.ribbon{position:absolute;top:-22px;right:28px;background:var(--gold);color:#fff;font-weight:800;font-size:16px;letter-spacing:2px;padding:9px 18px;border-radius:30px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.name{font-weight:900;font-size:36px;color:var(--c);letter-spacing:.5px;line-height:1.1}
+.tag{font-weight:700;font-size:19px;color:var(--mut);margin-top:6px;min-height:24px}
+.tag em{font-style:normal;color:#B3261E}
+.prods{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:20px 0 10px;background:#F7F9F5;border-radius:18px;padding:18px 10px 12px;min-height:220px}
+.p{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;max-width:150px}
+.p img{object-fit:contain;max-width:100%}
+.p .pn{font-size:13px;font-weight:600;color:var(--mut);margin-top:8px;line-height:1.2;min-height:32px}
+.p .pr{font-size:16px;font-weight:800;color:var(--ink)}
+.plus{font-weight:800;color:var(--c);font-size:26px;align-self:center;margin-bottom:30px}
+.price{display:flex;align-items:baseline;gap:14px;margin:8px 0 14px;flex-wrap:wrap}
+.price .big{font-size:52px;font-weight:900;color:var(--em)}
+.price .alt{font-size:16px;font-weight:600;color:var(--mut);line-height:1.3}
+.btitle{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--c);text-transform:uppercase;margin-bottom:8px}
+ul{list-style:none}
+li{font-size:17.5px;font-weight:600;line-height:1.35;padding-left:30px;position:relative;margin-bottom:7px}
+li:before{content:"✓";position:absolute;left:0;top:0;width:21px;height:21px;border-radius:50%;background:var(--c);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.small .p img{height:95px!important}
+footer{margin:30px 50px 0;background:linear-gradient(135deg,#0B3D2E,#13684E);border-radius:26px;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:26px 40px}
+.su{display:flex;align-items:center;gap:22px}
+.su .lbl{font-size:20px;font-weight:700;letter-spacing:3px;color:var(--gold2)}
+.su .amt{font-size:58px;font-weight:900}
+.fnote{font-size:18px;line-height:1.5;text-align:right;opacity:.92}
+.fnote b{color:var(--gold2)}
+</style></head><body>
+<header>
+  <div class="kick">PAKEJ TPFM</div>
+  <h1>Pilih Set <span>Turun Berat</span> Anda</h1>
+  <p class="sub">Shake <b>Formula 1</b> adalah asas utama untuk ikut Meal Plan TPFM. Tambah produk lain untuk <b>percepatkan</b> proses turun berat anda.</p>
+</header>
+<div class="grid">
+
+<div class="card" style="--c:#13684E">
+  <div class="name">SET BAKAR KALORI</div>
+  <div class="tag">Lebih laju <em>turun 2–3 kg</em></div>
+  <div class="prods">
+    <div class="p"><img src="img/f1.png" style="height:150px"><div class="pn">Formula 1 Shake</div><div class="pr">RM163.55</div></div>
+    <div class="plus">+</div>
+    <div class="p"><img src="img/tea.png" style="height:105px"><div class="pn">Tea Mix</div><div class="pr">RM136.72</div></div>
+    <div class="plus">+</div>
+    <div class="p"><img src="img/delivery.png" style="height:105px"><div class="pn">Pos</div><div class="pr">RM15.90</div></div>
+  </div>
+  <div class="price"><div class="big">RM316.17</div><div class="alt">Semenanjung<br>RM332.07 Sabah/Sarawak</div></div>
+  <div class="btitle">Kelebihan Tea Mix</div>
+  <ul><li>Bakar kalori walau tidak bersenam</li><li>Bertenaga dan tak letih</li><li>Kencing lebih lawas, buang lemak lebih efisien</li><li>Antioksida &amp; awet muda</li><li>Kurangkan craving benda manis</li></ul>
+</div>
+
+<div class="card" style="--c:#2C7A7B">
+  <div class="name">SET KEMPIS PERUT</div>
+  <div class="tag">Fokus perut &amp; penghadaman</div>
+  <div class="prods">
+    <div class="p"><img src="img/f1.png" style="height:150px"><div class="pn">Formula 1 Shake</div><div class="pr">RM163.55</div></div>
+    <div class="plus">+</div>
+    <div class="p"><img src="img/tea.png" style="height:105px"><div class="pn">Tea Mix</div><div class="pr">RM136.72</div></div>
+    <div class="plus">+</div>
+    <div class="p"><img src="img/aloe.png" style="height:155px"><div class="pn">Herbal Aloe</div><div class="pr">RM175.98</div></div>
+    <div class="plus">+</div>
+    <div class="p"><img src="img/delivery.png" style="height:90px"><div class="pn">Pos</div><div class="pr">RM15.90</div></div>
+  </div>
+  <div class="price"><div class="big">RM492.15</div><div class="alt">Semenanjung<br>RM508.05 Sabah/Sarawak</div></div>
+  <div class="btitle">Kelebihan Aloe Vera</div>
+  <ul><li>Perut lebih tenang (kurang gastrik)</li><li>Kulit lebih cantik</li><li>Extra boost penurunan berat badan 40%</li><li>Sedap &amp; tiada kalori tambahan</li><li>Usus &amp; imun lebih sihat (kurang sembelit)</li></ul>
+</div>
+
+<div class="card small" style="--c:#8E3B5B">
+  <div class="name">SET COMPLETE WANITA</div>
+  <div class="tag">Usia 40-an pre-menopause · <em>Turun 4–5 kg</em> &amp; reset hormon</div>
+  <div class="prods">
+    <div class="p"><img src="img/f1.png" style="height:120px!important"><div class="pn">Formula 1</div><div class="pr">RM163.55</div></div>
+    <div class="p"><img src="img/tea.png"><div class="pn">Tea Mix</div><div class="pr">RM136.72</div></div>
+    <div class="p"><img src="img/aloe.png" style="height:120px!important"><div class="pn">Aloe</div><div class="pr">RM175.98</div></div>
+    <div class="p"><img src="img/f3.png"><div class="pn">Protein F3</div><div class="pr">RM136.18</div></div>
+    <div class="p"><img src="img/omega.png"><div class="pn">Omega 3</div><div class="pr">RM161.36</div></div>
+  </div>
+  <div class="price"><div class="big">RM799</div><div class="alt">Termasuk pos</div></div>
+  <div class="btitle">Kelebihan Omega 3 Fish Oil</div>
+  <ul><li>Bantu kempiskan perut lebih cepat</li><li>Perbaiki masalah hormon wanita</li><li>Kurangkan lemak tepu &amp; tahap kolesterol</li><li>Kulit lebih cantik &amp; awet muda</li><li>Lengkap: shake, protein, aloe, tea &amp; omega</li></ul>
+</div>
+
+<div class="card small" style="--c:#A8841A">
+  <div class="ribbon">★ PALING TERBAIK</div>
+  <div class="name">BOOSTER PROGRAM</div>
+  <div class="tag">Fokus <em>fatloss &amp; reshape</em> · Pos PERCUMA</div>
+  <div class="prods" style="gap:2px">
+    <div class="p"><img src="img/f1.png" style="height:112px!important"><div class="pn">F1</div><div class="pr">163.55</div></div>
+    <div class="p"><img src="img/tea.png" style="height:80px!important"><div class="pn">Tea</div><div class="pr">136.72</div></div>
+    <div class="p"><img src="img/aloe.png" style="height:112px!important"><div class="pn">Aloe</div><div class="pr">175.98</div></div>
+    <div class="p"><img src="img/fibre.png" style="height:80px!important"><div class="pn">Fibre</div><div class="pr">156.58</div></div>
+    <div class="p"><img src="img/f3.png" style="height:80px!important"><div class="pn">F3</div><div class="pr">136.18</div></div>
+    <div class="p"><img src="img/omega.png" style="height:80px!important"><div class="pn">Omega 3</div><div class="pr">161.36</div></div>
+    <div class="p"><img src="img/nw.png" style="height:80px!important"><div class="pn">NW Formula</div><div class="pr">325.22</div></div>
+  </div>
+  <div class="price"><div class="big">RM1,255.59</div><div class="alt">Pos percuma</div></div>
+  <div class="btitle">Kelebihan Mixed Fibre &amp; NW Formula</div>
+  <ul><li>Fibre inulin bantu penghadaman &amp; kurang craving</li><li>5 g serat larut &amp; tidak larut dalam 1 sukatan</li><li>NW Formula untuk kesihatan jantung</li><li>Bukan sekadar kurus — kesihatan turut improve</li><li>NW Formula wajib ketika Turbo Program</li></ul>
+</div>
+</div>
+<footer>
+  <div class="su"><div><div class="lbl">SIGN UP AKAUN</div><div class="amt">RM64.80</div></div></div>
+  <div class="fnote">Semua harga dalam Ringgit Malaysia (RM).<br><b>Pilih set anda &amp; WhatsApp saya</b> untuk mula hari ini!</div>
+</footer>
+</body></html>
