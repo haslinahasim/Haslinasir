@@ -33,6 +33,20 @@ def line_img(parts, maxw=1010):
 BLOCKS = [(0.0, 7.4, [line_img([("MANA", WHITE), ("GENG", WHITE)]), line_img([("NAK", WHITE), ("KURUS?", YEL)])]),
           (7.6, DUR, [line_img([("DAH", WHITE), ("BERSENAM", YEL)]), line_img([("KE", WHITE), ("BELUM?", WHITE)])])]
 
+def cta_img():
+    im = Image.new("RGBA", (W, 300), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    f1 = ImageFont.truetype(BLK, 64); sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).text((W / 2, 64), "Nak Join Program?", font=f1, fill=(0, 0, 0, 200), anchor="mm", stroke_width=6, stroke_fill=(0, 0, 0, 200))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(8))); d = ImageDraw.Draw(im)
+    d.text((W / 2, 58), "Nak Join Program?", font=f1, fill=WHITE, anchor="mm", stroke_width=3, stroke_fill=(0, 0, 0))
+    glow = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(glow).rounded_rectangle([250, 125, W - 250, 255], 65, fill=(230, 30, 40, 210))
+    im.alpha_composite(glow.filter(ImageFilter.GaussianBlur(16))); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([260, 130, W - 260, 250], 60, fill=(225, 30, 40))
+    d.text((345, 190), "DM", font=ImageFont.truetype(BLK, 38), fill=(255, 215, 215), anchor="mm")
+    d.text((W / 2 + 45, 192), "\u201cCANTIK\u201d", font=ImageFont.truetype(BLK, 70), fill=WHITE, anchor="mm")
+    return im
+CTA = cta_img(); CTA_AT = 10.8
+
 sess = ort.InferenceSession(os.path.expanduser("~/easy-edit/models/modnet.onnx")); prev = None
 def matte(rgb):
     global prev
@@ -65,5 +79,6 @@ while True:
                 y += l[0].height - 30
     person = frame.copy(); person.putalpha(m); img.alpha_composite(person)
     for ol, yy, al, sc in FRONT: paste(img, ol, 0, yy, al, sc)
+    if t >= CTA_AT: p = back((t - CTA_AT) / 0.5); paste(img, CTA, 0, 1500 + 50 * (1 - min(p, 1)), ease((t - CTA_AT) / 0.3), 0.85 + 0.15 * min(p, 1.05))
     enc.stdin.write(img.convert("RGB").tobytes()); n += 1
 enc.stdin.close(); enc.wait(); print("frames", n, "->", OUT)
