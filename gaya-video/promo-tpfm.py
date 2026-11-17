@@ -2,7 +2,7 @@
 import subprocess, numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-W, H, FPS, SRC, OUT, DUR, END = 1080, 1920, 30, "in.mov", "promo-tpfm-pro.mp4", 39.24, 2.8
+W, H, FPS, SRC, OUT, DUR, END = 1080, 1920, 30, "in.mov", "promo-tpfm-pro.mp4", 37.0, 3.5
 FD = "/usr/share/fonts/opentype/inter/"
 BLK, XB, BD = FD + "InterDisplay-Black.otf", FD + "InterDisplay-ExtraBold.otf", FD + "InterDisplay-Bold.otf"
 SERIF = "/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf"
@@ -54,9 +54,8 @@ SC = [
     (23.90, 26.63, "05", "Topik-Topik", "Khas", "Ilmu lengkap supaya kurus kekal", ("live", auto_box(25.0, ymin=250))),
     (26.63, 29.00, "06", "Group", "Coaching", "Video & nota daripada coach, bersama rakan seperjuangan", ("live", FULL)),
     (29.00, 32.10, "07", "Pelan Turun Berat", "Peribadi", "Disesuaikan oleh coach, khas untuk anda", None),
-    (32.10, 36.90, "08", "Senaman Dalam", "App", "Rutin 21 hari + video Gym, Cardio, Six Pack & banyak lagi", ("app",)),
-    (36.90, DUR, "09", "Protein Shake", "Herbalife", "Termasuk dalam pakej \u2014 pilih perisa kegemaran anda", ("still", 36.9, auto_box(36.9, ymin=330, ymax=1350))),
-    (DUR, DUR + END, "", "Jangan", "Bertangguh.", "Turun berat dengan ilmu \u2014 fokus 5 kg sebulan", "CTA"),
+    (32.10, DUR, "08", "Senaman Dalam", "App", "Rutin 21 hari + video Gym, Cardio, Six Pack & banyak lagi", ("app",)),
+    (DUR, DUR + END, "", "Jom Mulakan Journey", "Kurus, Sihat & Cantik", "anda \u2014 sekarang!", "CTA"),
 ]
 STILLS = {}
 for s in SC:
@@ -90,6 +89,8 @@ def text_block(step, title, acc, sub, centered=False):
     if step:
         d.text((70, y), step, font=F(BLK, 64), fill=RED); d.line([(160, y + 36), (260, y + 36)], fill=(255, 255, 255, 90), width=3); y += 90
     ft = F(BLK, 84 if not centered else 104); fa = F(SERIF, 96 if not centered else 120)
+    while d.textlength(title, font=ft) > W - 120: ft = F(BLK, ft.size - 2)
+    while d.textlength(acc, font=fa) > W - 120: fa = F(SERIF, fa.size - 2)
     tw = d.textlength(title + " ", font=ft); aw = d.textlength(acc, font=fa)
     if tw + aw <= W - 140:
         x0 = 70 if not centered else (W - tw - aw) / 2
@@ -150,7 +151,7 @@ def paste(base, im, x, y, a=1.0, sc=1.0):
 # ---------- render ----------
 dec = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-i", SRC, "-vf", f"fps={FPS},scale={W}:{H}", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
 enc = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", SRC,
-    "-map", "0:v", "-map", "1:a", "-af", "apad,afade=t=out:st=%.2f:d=1.5" % (DUR + END - 1.6), "-t", str(DUR + END),
+    "-map", "0:v", "-map", "1:a", "-af", "atrim=0:%.2f,afade=t=out:st=%.2f:d=0.5,apad" % (DUR, DUR - 0.5), "-t", str(DUR + END),
     "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", OUT], stdin=subprocess.PIPE)
 last, cache = None, {}
 for n in range(int((DUR + END) * FPS)):
