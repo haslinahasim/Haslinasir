@@ -52,11 +52,11 @@ SC = [
     (20.10, 21.00, "04", "Soalan Peribadi", "Dijawab", "Tanya terus kepada coach anda", ("live", auto_box(20.5))),
     (21.00, 23.90, "05", "Belajar Ilmu", "Pemakanan", "Faham cara jaga makan untuk jangka panjang", None),
     (23.90, 26.63, "05", "Topik-Topik", "Khas", "Ilmu lengkap supaya kurus kekal", ("live", auto_box(25.0, ymin=250))),
-    (26.63, 29.80, "06", "Group", "Coaching", "Video & nota daripada coach, bersama rakan seperjuangan", ("live", FULL)),
-    (29.80, 31.83, "07", "Bimbingan", "Senaman", "Daripada trainer profesional", None),
-    (31.83, 33.80, "07", "Bimbingan", "Senaman", "Ikut video senaman di rumah", ("live", auto_box(32.8))),
-    (33.80, 37.53, "08", "Protein Shake", "Herbalife", "Termasuk dalam pakej — pilih perisa kegemaran anda", ("still", 36.9, auto_box(36.9, ymin=330, ymax=1350))),
-    (37.53, DUR + END, "", "Jangan", "Bertangguh.", "Turun berat dengan ilmu — fokus 5 kg sebulan", "CTA"),
+    (26.63, 29.00, "06", "Group", "Coaching", "Video & nota daripada coach, bersama rakan seperjuangan", ("live", FULL)),
+    (29.00, 32.10, "07", "Pelan Turun Berat", "Peribadi", "Disesuaikan oleh coach, khas untuk anda", None),
+    (32.10, 36.90, "08", "Senaman Dalam", "App", "Rutin 21 hari + video Gym, Cardio, Six Pack & banyak lagi", ("app",)),
+    (36.90, DUR, "09", "Protein Shake", "Herbalife", "Termasuk dalam pakej \u2014 pilih perisa kegemaran anda", ("still", 36.9, auto_box(36.9, ymin=330, ymax=1350))),
+    (DUR, DUR + END, "", "Jangan", "Bertangguh.", "Turun berat dengan ilmu \u2014 fokus 5 kg sebulan", "CTA"),
 ]
 STILLS = {}
 for s in SC:
@@ -124,12 +124,21 @@ def cta():
     d.text((W / 2, 110), "bersama", font=F(BD, 40), fill=GREY, anchor="mm")
     d.text((W / 2, 190), "TEAM POWERFIT MALAYSIA", font=F(BLK, 62), fill=WHITE, anchor="mm")
     d.text((W / 2, 255), "Program Coaching TPFM", font=F(SERIF, 46), fill=GOLD, anchor="mm")
-    glow = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(glow).rounded_rectangle([250, 380, W - 250, 500], 60, fill=(230, 30, 40, 200))
-    im.alpha_composite(glow.filter(ImageFilter.GaussianBlur(18))); d = ImageDraw.Draw(im)
-    d.rounded_rectangle([260, 385, W - 260, 495], 55, fill=RED)
-    d.text((345, 440), "DM", font=F(BLK, 36), fill=(255, 215, 215), anchor="mm"); d.text((W / 2 + 45, 440), "“CANTIK”", font=F(BLK, 64), fill=WHITE, anchor="mm")
     return im
 CTA = cta()
+APW, APH = 540, 1170
+_raw = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", "app.mp4", "-filter_complex",
+    "[0:v]trim=0:7.6,setpts=PTS-STARTPTS[a];[0:v]trim=10:14.5,setpts=PTS-STARTPTS[b];[a][b]concat=n=2:v=1:a=0,setpts=PTS/2.55,fps=30,scale=%d:%d" % (APW, APH),
+    "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], capture_output=True).stdout
+APP = [np.frombuffer(_raw[k:k + APW * APH * 3], np.uint8).reshape(APH, APW, 3) for k in range(0, len(_raw) - APW * APH * 3 + 1, APW * APH * 3)]
+print("app frames", len(APP))
+def phone(scr):
+    b = 18; w, h = APW + 2 * b, APH + 2 * b
+    out = Image.new("RGBA", (w + 80, h + 80), (0, 0, 0, 0)); sh = Image.new("RGBA", out.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([40, 56, 40 + w, 56 + h], 70, fill=(0, 0, 0, 190)); out.alpha_composite(sh.filter(ImageFilter.GaussianBlur(24)))
+    d = ImageDraw.Draw(out); d.rounded_rectangle([40, 40, 40 + w, 40 + h], 70, fill=(10, 10, 12), outline=(90, 90, 98), width=4)
+    im = Image.fromarray(scr).convert("RGBA"); m = Image.new("L", im.size, 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, APW - 1, APH - 1], 54, fill=255); im.putalpha(m)
+    out.alpha_composite(im, (40 + b, 40 + b)); return out
 TXT = {i: text_block(s[2], s[3], s[4], s[5], centered=(s[6] is None or s[6] == "CTA")) for i, s in enumerate(SC)}
 
 def paste(base, im, x, y, a=1.0, sc=1.0):
@@ -165,7 +174,12 @@ for n in range(int((DUR + END) * FPS)):
     else:
         paste(img, tb, 0, 170 + (0 if same_text else 30 * (1 - ta)), ta)
         top = 170 + tb.height + 30
-        if media[0] == "still": src = STILLS[s0]
+        if media[0] == "app":
+            k = min(int(lt * FPS), len(APP) - 1); ph = phone(APP[k]); p = back(lt / 0.5)
+            sc_ = min(1.0, (H - 120 - top) / ph.height)
+            paste(img, ph, (W - ph.width) / 2, top - 20 + 50 * (1 - min(p, 1)), min(1, ease(lt / 0.3)), sc_ * (0.94 + 0.06 * p))
+            src = None
+        elif media[0] == "still": src = STILLS[s0]
         else:
             fr_ = last
             if 14.0 <= t < 18.67 and abs(int(last[976, 140, 0]) - 250) < 25 and int(last[976, 140, 1]) > 180:   # hide old pink caption bubble
@@ -175,6 +189,9 @@ for n in range(int((DUR + END) * FPS)):
                 fr_ = np.asarray(pi.convert("RGB"))
             x0, y0, x1, y1 = media[1]; src = Image.fromarray(fr_[y0:y1, x0:x1])
         maxh = H - 150 - top
+        if src is None:
+            dd = ImageDraw.Draw(img); dd.rectangle([0, H - 10, W, H], fill=(255, 255, 255, 25)); dd.rectangle([0, H - 10, int(W * t / (DUR + END)), H], fill=RED)
+            enc.stdin.write(img.convert("RGB").tobytes()); continue
         cd = card(src, 900, maxh)
         p = back(lt / 0.5); kb = 1 + 0.03 * min(lt / (s1 - s0), 1)
         paste(img, cd, (W - cd.width) / 2, top + (maxh + 80 - cd.height) / 2 + 50 * (1 - min(p, 1)), min(1, ease(lt / 0.3)), (0.94 + 0.06 * p) * kb)
