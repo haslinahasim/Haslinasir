@@ -58,7 +58,7 @@ while True:
     img = frame.copy(); FRONT = []
     for a, b, lines in BLOCKS:
         if a <= t < b:
-            total = sum(l[0].height for l in lines) - 30 * (len(lines) - 1); y = (H - total) / 2 - 40
+            total = sum(l[0].height for l in lines) - 30 * (len(lines) - 1); y = (H - total) / 2 + 230
             for k, l in enumerate(lines):
                 at = a + 0.15 + k * 0.35; p = back((t - at) / 0.45); al = min(ease((t - at) / 0.3), ease((b - t) / 0.25))
                 if t >= at: paste(img, l[0], 0, y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)); FRONT.append((l[1], y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)))
