@@ -84,10 +84,10 @@ def put(base, im, x, y, a):
     x, y = int(x), int(y); im = im.crop((max(0, -x), 0, min(im.width, W - x), im.height)); base.alpha_composite(im, (max(0, x), y))
 for n in range(int(DUR * FPS)):
     t = n / FPS; img = bg(t)
-    p = ease(t / 0.5); put(img, TITLE, 0, 150 - 30 * (1 - p), p)
+    p = ease((t - 1.5) / 0.5); put(img, TITLE, 0, 150 - 30 * (1 - p), p)
     for i, r in enumerate(ROWS):
-        at = 0.6 + i * 0.45; p = ease((t - at) / 0.45)
+        at = 2.1 + i * 0.45; p = ease((t - at) / 0.45)
         if t >= at: put(img, r, 160 * (1 - p), 470 + i * 225, p)
-    p = ease((t - 3.2) / 0.4); put(img, cta, 0, 1650 + 30 * (1 - p), p)
+    p = ease((t - 4.7) / 0.4); put(img, cta, 0, 1650 + 30 * (1 - p), p)
     enc.stdin.write(img.convert("RGB").tobytes())
 enc.stdin.close(); enc.wait(); print("->", OUT)
