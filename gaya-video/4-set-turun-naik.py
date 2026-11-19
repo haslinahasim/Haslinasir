@@ -19,8 +19,9 @@ SETS = [("BUAH", [("Epal", "\U0001F34E"), ("Jambu Batu", "\U0001F34F"), ("Tembik
                   [("Smoothie Pisang", "\U0001F34C\U0001F964"), ("Milkshake Coklat", "\U0001F36B\U0001F964"), ("Jus Buah", "\U0001F9C3"), ("Susu Full Cream", "\U0001F95B"), ("Teh Tarik", "\U0001F9CB")]),
         ("MAKANAN", [("Telur Rebus", "\U0001F95A"), ("Oat", "\U0001F963"), ("Capati", "\U0001FAD3"), ("Kacang Kuda", "\U0001FAD8"), ("Ikan Bakar", "\U0001F41F")],
                   [("Keju", "\U0001F9C0"), ("Nasi Putih", "\U0001F35A"), ("Roti Putih", "\U0001F35E"), ("Kacang Tanah", "\U0001F95C"), ("Kentang Goreng", "\U0001F35F")])]
-SETDUR, INTRO = 7.0, 0.8
-DUR = INTRO + SETDUR * len(SETS)
+SETDUR, INTRO, CTAD = 7.0, 0.8, 3.5
+PHOTO_OK = {"Telur Rebus", "Oat", "Capati", "Kacang Kuda", "Ikan Bakar", "Keju", "Nasi Putih", "Roti Putih", "Kacang Tanah", "Kentang Goreng"}
+DUR = INTRO + SETDUR * len(SETS) + CTAD
 EF = ImageFont.truetype("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf", 109)
 def emoji_img(chars, size):
     out = Image.new("RGBA", (size, size), (255, 255, 255, 255)); n = len(chars)
@@ -54,6 +55,7 @@ def sub(t, col):
 
 def item(name, col, emo=None, size=196):
     path = f"veg/{name}.png"
+    if emo and os.path.exists(path) and name in PHOTO_OK: emo = None
     out = Image.new("RGBA", (size + 60, size + 110), (0, 0, 0, 0)); cx = out.width // 2
     sh = Image.new("RGBA", out.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).ellipse([cx - size / 2 - 6, 24, cx + size / 2 + 6, size + 36], fill=(0, 0, 0, 160))
     out.alpha_composite(sh.filter(ImageFilter.GaussianBlur(10)))
@@ -80,6 +82,18 @@ def chip(t):
     im = Image.new("RGBA", (int(w), 80), (0, 0, 0, 0)); d = ImageDraw.Draw(im); d.rounded_rectangle([0, 0, w - 1, 79], 40, fill=(255, 214, 10))
     d.text((w / 2, 40), t, font=f, fill=INK, anchor="mm"); return im
 CHIPS = [chip(n) for n, _, _ in SETS]
+def cta_card():
+    im = Image.new("RGBA", (W, 520), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([110, 20, W - 110, 500], 50, fill=(15, 15, 20, 225))
+    d.text((W / 2, 120), "Nak Join Program?", font=F(BLK, 72), fill=WHITE, anchor="mm")
+    d.text((W / 2, 205), "Turun berat tanpa berlapar", font=F(BD, 40), fill=(205, 205, 210), anchor="mm")
+    glow = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(glow).rounded_rectangle([240, 290, W - 240, 430], 70, fill=(230, 30, 40, 210))
+    im.alpha_composite(glow.filter(ImageFilter.GaussianBlur(18))); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([250, 295, W - 250, 425], 65, fill=RED)
+    d.text((340, 360), "DM", font=F(BLK, 40), fill=(255, 215, 215), anchor="mm")
+    d.text((W / 2 + 45, 362), "\u201cCANTIK\u201d", font=F(BLK, 76), fill=WHITE, anchor="mm")
+    return im
+CTA = cta_card()
 
 def paste(base, im, x, y, a=1.0, sc=1.0):
     if sc != 1.0: w0, h0 = im.size; im = im.resize((max(1, int(w0 * sc)), max(1, int(h0 * sc))), Image.LANCZOS); x += (w0 - im.width) / 2; y += (h0 - im.height) / 2
@@ -98,9 +112,12 @@ for n in range(int(DUR * FPS)):
         if t >= at:
             paste(img, pl, cx - pl.width / 2, 230 - 30 * (1 - min(p, 1)), ease((t - at) / 0.3), 0.85 + 0.15 * min(p, 1.05))
             paste(img, sb, cx - sb.width / 2, 365, ease((t - at - 0.3) / 0.3))
+    TEND = INTRO + SETDUR * len(SETS)
     si = min(int(max(t - INTRO, 0) // SETDUR), len(SETS) - 1); st = t - INTRO - si * SETDUR
-    if t >= INTRO:
-        ch = CHIPS[si]; out = ease((SETDUR - st) / 0.3) if si < len(SETS) - 1 else 1
+    if t >= TEND:
+        p = back((t - TEND) / 0.6); paste(img, CTA, 0, 760 + 60 * (1 - min(p, 1)), ease((t - TEND) / 0.35), 0.9 + 0.1 * min(p, 1.05))
+    elif t >= INTRO:
+        ch = CHIPS[si]; out = ease((SETDUR - st) / 0.3)
         paste(img, ch, (W - ch.width) / 2, 120, ease(st / 0.3) * out)
         IL, IR = ITEMS[si]
         for i in range(5):
@@ -108,7 +125,7 @@ for n in range(int(DUR * FPS)):
                 at = 0.2 + i * 0.35 + side * 0.17; p = back((st - at) / 0.4)
                 if st >= at:
                     im = lst[i]; dx = (-120 if side == 0 else 120) * (1 - min(p, 1))
-                    if si < len(SETS) - 1 and st > SETDUR - 0.35: dx += (-1 if side == 0 else 1) * 400 * ease((st - SETDUR + 0.35) / 0.35)
+                    if st > SETDUR - 0.35: dx += (-1 if side == 0 else 1) * 400 * ease((st - SETDUR + 0.35) / 0.35)
                     paste(img, im, cx - im.width / 2 + dx, Y0 + i * STEP, ease((st - at) / 0.25) * out, 0.8 + 0.2 * min(p, 1.05))
     enc.stdin.write(img.convert("RGB").tobytes())
 enc.stdin.close(); enc.wait(); print("->", OUT)
