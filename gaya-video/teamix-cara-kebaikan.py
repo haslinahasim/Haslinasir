@@ -85,7 +85,7 @@ BIG = text_img("TEA MIX", F(BLK, 190), YEL, stroke=8)
 SUB = text_img("Herbalife", F(SERIF, 80), CREAM, stroke=3)
 STEPS = [(s[1] + 0.1, s[2], step("1", "Sediakan 200\u2013240ml air")), (s[2] + 0.1, s[3], step("2", "Masukkan \u00bd sudu teh Tea Mix")),
          (s[3] + 0.1, DUR, step("3", "Kacau \u2014 panas atau sejuk", False))]
-BEN = [("Bantu kekal fokus & aktif", False), ("Manfaat antioksidan daripada teh", False), ("Rangsangan tenaga*", False), ("Hanya 6 kkal sehidangan", True), ("Mudah dibawa ke mana-mana", False)]
+BEN = [("Bertenaga*", False), ("Hanya 6 kkal sehidangan", True)]
 CARDS = []
 ENDC = end_card(PROD)
 
