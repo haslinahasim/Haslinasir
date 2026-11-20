@@ -10,9 +10,9 @@ def back(v):
     v = min(max(v, 0), 1); c1 = 1.7; return 1 + (c1 + 1) * (v - 1) ** 3 + c1 * (v - 1) ** 2
 DUR = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", SRC], capture_output=True, text=True).stdout)
 
-def line_img(parts, maxw=1010):
+def line_img(parts, maxw=760):
     """parts: [(text, colour)] on one line, sized to fill the width."""
-    d = ImageDraw.Draw(Image.new("RGBA", (1, 1))); size = 260
+    d = ImageDraw.Draw(Image.new("RGBA", (1, 1))); size = 170
     while True:
         f = ImageFont.truetype(BLK, size); sp = d.textlength(" ", font=f)
         tw = sum(d.textlength(t, font=f) for t, _ in parts) + sp * (len(parts) - 1)
@@ -31,6 +31,7 @@ def line_img(parts, maxw=1010):
     return full, ol
 
 PINK = (255, 120, 170)
+XOFF = -55   # keep clear of the like/comment/share icons on the right
 BLOCKS = [(0.0, 4.0, 0.35, [line_img([("NIAT", WHITE), ("NAK", WHITE)]), line_img([("DIET", YEL)]), line_img([("TAPI..", WHITE)])]),
           (4.0, 9.6, 1.15, [line_img([("CUTI", WHITE), ("SEKOLAH", YEL)]), line_img([("BALIK", WHITE), ("KAMPUNG", YEL)]), line_img([("KENDURI", WHITE), ("BANYAK", YEL)]), line_img([("NAK", WHITE), ("TRAVEL", YEL), ("OVERSEA", WHITE)])]),
           (9.6, DUR, 0.45, [line_img([("MUNGKIN", WHITE), ("TIADA", WHITE)]), line_img([("\u2018JODOH\u2019", PINK)]), line_img([("KURUS", YEL), ("KAN..", WHITE)])])]
@@ -74,12 +75,12 @@ while True:
     img = frame.copy(); FRONT = []
     for a, b, stg, lines in BLOCKS:
         if a <= t < b:
-            total = sum(l[0].height for l in lines) - 30 * (len(lines) - 1); y = 900
+            total = sum(l[0].height for l in lines) - 22 * (len(lines) - 1); y = 820
             for k, l in enumerate(lines):
                 at = a + 0.15 + k * stg; p = back((t - at) / 0.45); al = min(ease((t - at) / 0.3), ease((b - t) / 0.25))
-                if t >= at: paste(img, l[0], 0, y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)); FRONT.append((l[1], y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)))
-                y += l[0].height - 30
+                if t >= at: paste(img, l[0], XOFF, y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)); FRONT.append((l[1], y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)))
+                y += l[0].height - 22
     person = frame.copy(); person.putalpha(m); img.alpha_composite(person)
-    for ol, yy, al, sc in FRONT: paste(img, ol, 0, yy, al, sc)
+    for ol, yy, al, sc in FRONT: paste(img, ol, XOFF, yy, al, sc)
     enc.stdin.write(img.convert("RGB").tobytes()); n += 1
 enc.stdin.close(); enc.wait(); print("frames", n, "->", OUT)
