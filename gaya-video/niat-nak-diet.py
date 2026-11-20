@@ -50,6 +50,17 @@ def cta_img():
     return im
 CTA = cta_img(); CTA_AT = 10.8
 
+def top_cta():
+    im = Image.new("RGBA", (W, 300), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([70, 10, W - 140, 280], 40, fill=(15, 15, 20, 215))
+    f1 = ImageFont.truetype(BLK, 50)
+    d.text(((W - 70) / 2, 72), "Nak saya bantu", font=f1, fill=WHITE, anchor="mm")
+    d.text(((W - 70) / 2, 134), "kurus, cantik & sihat?", font=f1, fill=YEL, anchor="mm")
+    d.rounded_rectangle([(W - 70) / 2 - 270, 180, (W - 70) / 2 + 270, 260], 40, fill=(225, 30, 40))
+    d.text(((W - 70) / 2, 221), "DM / komen \u201cCANTIK\u201d", font=ImageFont.truetype(BLK, 44), fill=WHITE, anchor="mm")
+    return im
+TOPCTA = top_cta()
+
 sess = ort.InferenceSession(os.path.expanduser("~/easy-edit/models/modnet.onnx")); prev = None
 def matte(rgb):
     global prev
@@ -78,9 +89,10 @@ while True:
             total = sum(l[0].height for l in lines) - 22 * (len(lines) - 1); y = 820
             for k, l in enumerate(lines):
                 at = a + 0.15 + k * stg; p = back((t - at) / 0.45); al = min(ease((t - at) / 0.3), ease((b - t) / 0.25))
-                if t >= at: paste(img, l[0], XOFF, y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)); FRONT.append((l[1], y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)))
+                if t >= at: paste(img, l[0], XOFF, y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)); FRONT.append((l[0], y + 40 * (1 - min(p, 1)), al, 0.8 + 0.2 * min(p, 1.05)))
                 y += l[0].height - 22
     person = frame.copy(); person.putalpha(m); img.alpha_composite(person)
     for ol, yy, al, sc in FRONT: paste(img, ol, XOFF, yy, al, sc)
+    paste(img, TOPCTA, 0, 230 - 30 * (1 - ease((t - 0.3) / 0.5)), ease((t - 0.3) / 0.4), 1.0)
     enc.stdin.write(img.convert("RGB").tobytes()); n += 1
 enc.stdin.close(); enc.wait(); print("frames", n, "->", OUT)
