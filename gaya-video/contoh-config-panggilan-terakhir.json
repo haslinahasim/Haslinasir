@@ -1,0 +1,98 @@
+{
+ "src": "in.mov",
+ "out": "reel-panggilan-terakhir.mp4",
+ "dur": 15.0,
+ "words": "words.json",
+ "studio": true,
+ "hook": {
+  "b": 5.3,
+  "kicker": "DI MANA TU ORANG YANG AZAM TAHUN 2026",
+  "big": "NAK KURUS?!",
+  "size": 128,
+  "y": 360
+ },
+ "walls": [
+  {
+   "a": 7.1,
+   "b": 8.6,
+   "word": "AZAN KAT TELINGA",
+   "color": "green"
+  },
+  {
+   "a": 10.2,
+   "b": 11.4,
+   "word": "PANGGILAN TERAKHIR",
+   "color": "yellow"
+  }
+ ],
+ "cards": [
+  {
+   "type": "list",
+   "a": 11.5,
+   "b": 15.0,
+   "title": "PROGRAM COACHING NOVEMBER",
+   "times": [
+    11.5,
+    13.3
+   ],
+   "items": [
+    [
+     "!",
+     "Panggilan terakhir!",
+     true
+    ],
+    [
+     "v",
+     "Cepat DM \u201cCANTIK\u201d",
+     false
+    ]
+   ]
+  }
+ ],
+ "end": {
+  "line1": "Panggilan terakhir",
+  "serif": [
+   "Program Coaching",
+   "November"
+  ],
+  "dm": "CANTIK"
+ },
+ "accent": [
+  3,
+  5,
+  8,
+  12,
+  14
+ ],
+ "groups": [
+  [
+   0,
+   3
+  ],
+  [
+   3,
+   5
+  ],
+  [
+   5,
+   7
+  ],
+  [
+   7,
+   9
+  ],
+  [
+   9,
+   11
+  ],
+  [
+   11,
+   13
+  ],
+  [
+   13,
+   15
+  ]
+ ],
+ "cap_size": 74
+}
