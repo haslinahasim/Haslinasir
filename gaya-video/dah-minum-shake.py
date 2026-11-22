@@ -30,16 +30,25 @@ SEG = [(0.3, 6.6, [(line("Dah minum", F(PF, 90), WHITE), 300, 0.0), (line("shake
                     (line("untuk disediakan", F(PFI, 70), WHITE), 575, 0.9)])]
 
 def cta():
-    im = Image.new("RGBA", (W, 310), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    d.rounded_rectangle([110, 8, W - 170, 300], 40, fill=(20, 12, 18, 205), outline=(255, 214, 120, 160), width=3)
+    im = Image.new("RGBA", (W, 430), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([110, 8, W - 170, 300], 40, fill=(20, 12, 18, 210), outline=(255, 214, 120, 170), width=3)
     cx = (W - 60) / 2
-    d.text((cx, 62), "Nak saya bantu?", font=F(PF, 58), fill=WHITE, anchor="mm")
-    g = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(g).text((cx, 145), "kurus, cantik & sihat", font=F(GV, 80), fill=GOLD + (190,), anchor="mm")
+    d.text((cx, 62), "Nak dapatkan", font=F(PF, 58), fill=WHITE, anchor="mm")
+    g = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(g).text((cx, 145), "produk Herbalife?", font=F(GV, 84), fill=GOLD + (190,), anchor="mm")
     im.alpha_composite(g.filter(ImageFilter.GaussianBlur(12))); d = ImageDraw.Draw(im)
-    d.text((cx, 145), "kurus, cantik & sihat", font=F(GV, 80), fill=GOLD, anchor="mm")
-    d.rounded_rectangle([cx - 245, 210, cx + 245, 278], 34, fill=(225, 30, 40))
-    d.text((cx, 245), "DM / komen \u201cCANTIK\u201d", font=F(BD, 40), fill=WHITE, anchor="mm")
+    d.text((cx, 145), "produk Herbalife?", font=F(GV, 84), fill=GOLD, anchor="mm")
+    d.rounded_rectangle([cx - 210, 210, cx + 210, 278], 34, fill=(225, 30, 40))
+    d.text((cx, 245), "DM \u201cCANTIK\u201d", font=F(BD, 42), fill=WHITE, anchor="mm")
     return im
+def disclaimer():
+    im = Image.new("RGBA", (W, 130), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle([90, 5, W - 150, 125], 22, fill=(0, 0, 0, 150))
+    f = F(BD, 25); cx = (W - 60) / 2
+    d.text((cx, 34), "Produk ini tidak bertujuan untuk mendiagnosis, merawat,", font=f, fill=(235, 235, 240), anchor="mm")
+    d.text((cx, 64), "menyembuh atau mencegah sebarang penyakit.", font=f, fill=(235, 235, 240), anchor="mm")
+    d.text((cx, 96), "Gunakan bersama pemakanan seimbang & senaman.", font=f, fill=(255, 214, 120), anchor="mm")
+    return im
+DISC = disclaimer()
 CTA, CTA_AT = cta(), 10.4
 
 # soft dark gradient at the top so text always reads on the lantern
@@ -69,5 +78,6 @@ while True:
                 if p > 0: paste(img, im, CX, y + 30 * (1 - p), p * out, 0.94 + 0.06 * p)
     if t >= CTA_AT:
         p = ease((t - CTA_AT) / 0.7); paste(img, CTA, W / 2, 210 + 155 + 30 * (1 - p), p, 0.95 + 0.05 * p)
+        paste(img, DISC, W / 2, 1460, ease((t - CTA_AT - 0.4) / 0.5))
     enc.stdin.write(img.convert("RGB").tobytes()); n += 1
 enc.stdin.close(); enc.wait(); print("frames", n, "->", OUT)
