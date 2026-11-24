@@ -6,10 +6,10 @@ v c1.mov 0.5 4.8 s01.mp4
 v c2.mov 1.0 4.6 s02.mp4
 v c3.mov 0.0 4.2 s03.mp4
 v c4.mov 0.0 4.6 s04.mp4
-p p_room.jpg 36 s05.mp4
+p p_room.jpg 55 s05.mp4
 p p_gift.jpg 40 s06.mp4
 v c5.mov 2.0 5.0 s07.mp4
 p p_street.jpg 32 s08.mp4
 v c6.mov 1.0 5.0 s09.mp4
 v c7.mp4 2.0 4.8 s10.mp4
-p p_shop.jpg 55 s11.mp4
+p p_shop.jpg 36 s11.mp4

@@ -23,12 +23,15 @@ def txt(t, font, col, glow=False):
         im.alpha_composite(g.filter(ImageFilter.GaussianBlur(14)))
     ImageDraw.Draw(im).text((pad - l, pad - tp), t, font=font, fill=col); return im
 
-def label(t):
-    f = F(PFI, 54); d = ImageDraw.Draw(Image.new("RGBA", (1, 1))); w = int(d.textlength(t, font=f)) + 110
-    im = Image.new("RGBA", (w + 40, 140), (0, 0, 0, 0)); sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
-    ImageDraw.Draw(sh).rounded_rectangle([20, 26, w + 20, 122], 48, fill=(0, 0, 0, 150)); im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(8)))
-    d = ImageDraw.Draw(im); d.rounded_rectangle([20, 18, w + 20, 114], 48, fill=(25, 15, 22, 225), outline=GOLD + (200,), width=3)
-    d.ellipse([46, 58, 62, 74], fill=GOLD); d.text((w / 2 + 30, 66), t, font=f, fill=WHITE, anchor="mm"); return im
+def label(t, sub=None):
+    f = F(PFI, 54); fs = F(XB, 34); d = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    w = int(max(d.textlength(t, font=f), d.textlength(sub, font=fs) if sub else 0)) + 110; h = 96 + (52 if sub else 0)
+    im = Image.new("RGBA", (w + 40, h + 44), (0, 0, 0, 0)); sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([20, 26, w + 20, h + 26], 48, fill=(0, 0, 0, 150)); im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(8)))
+    d = ImageDraw.Draw(im); d.rounded_rectangle([20, 18, w + 20, h + 18], 48, fill=(25, 15, 22, 225), outline=GOLD + (200,), width=3)
+    d.ellipse([46, 58, 62, 74], fill=GOLD); d.text((w / 2 + 30, 66), t, font=f, fill=WHITE, anchor="mm")
+    if sub: d.text((w / 2 + 30, 122), sub, font=fs, fill=GOLD, anchor="mm")
+    return im
 
 def tag():
     im = Image.new("RGBA", (400, 80), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
@@ -38,10 +41,10 @@ def tag():
 TITLE = [(txt("Day 2", F(GV, 190), GOLD, True), 640, 0.2), (txt("OSAKA", F(PF, 150), WHITE), 820, 0.6),
          (txt("Herbalife Country Vacation 2025", F(PFI, 46), (255, 240, 230)), 950, 1.0)]
 # (start, end, image, y)
-LABELS = [(4.7, 12.2, label("Petang di bandar Osaka"), 1400), (12.7, 16.4, label("Check-in Hilton Osaka"), 1400),
-          (16.9, 19.6, label("Bilik yang selesa"), 1400), (20.1, 23.2, label("Welcome gift dari Herbalife"), 430),
-          (23.7, 35.2, label("Jalan-jalan malam"), 1400), (35.7, 41.0, label("Shopping time!"), 1400)]
-END_AT = 41.4
+LABELS = [(4.7, 24.2, label("Jalan-jalan di Osaka"), 1400), (24.7, 31.8, label("Shopping time!"), 1400),
+          (32.3, 36.0, label("Check-in hotel 5 bintang", "berdekatan Osaka Station"), 1400),
+          (36.5, 39.6, label("Welcome gift dari Herbalife"), 430), (40.1, 42.2, label("Bilik hotel 5 bintang"), 1400)]
+END_AT = 42.3
 END = [(txt("Kenangan indah", F(PFI, 64), WHITE), 560, 0.0), (txt("Osaka", F(GV, 170), PINK, True), 700, 0.35),
        (txt("#haslinasirtakesosaka2026", F(XB, 44), GOLD), 850, 0.8)]
 TAG = tag()
