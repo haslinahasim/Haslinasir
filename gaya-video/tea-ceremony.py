@@ -49,7 +49,7 @@ def fun():
     im = Image.new("RGBA", (t.width + e.width, max(t.height, e.height)), (0, 0, 0, 0))
     im.alpha_composite(t, (0, (im.height - t.height) // 2)); im.alpha_composite(e, (t.width - 30, (im.height - e.height) // 2)); return im
 # (start, end, image, y)
-LABELS = [(4.3, 6.8, label("Ritual teh Jepun"), 1400), (7.3, 12.5, label("Manisan wagashi dulu"), 380),
+LABELS = [(4.3, 6.8, label("Ceremony teh Jepun"), 1400), (7.3, 12.5, label("Manisan wagashi dulu"), 380),
           (13.0, 15.8, label("Giliran saya pula!"), 1400), (16.3, 21.5, label("Tuang air panas…"), 1400),
           (29.1, 32.4, label("Matcha siap dihidang"), 1400), (32.9, 35.8, label("Matcha buatan sendiri"), 1400)]
 # whisking gag: (start, image, y)
