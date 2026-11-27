@@ -4,59 +4,58 @@
 :root{--em:#0E4D3A;--em2:#13684E;--gold:#C9A227;--gold2:#E9C96A;--cream:#FBF7EC;--ink:#16302A;--red:#B3261E}
 *{box-sizing:border-box;margin:0;padding:0}
 body{width:1080px;height:1350px;font-family:Montserrat,sans-serif;color:#fff;overflow:hidden;
-background:radial-gradient(circle at 85% 30%,#1B7A5C 0%,transparent 45%),linear-gradient(160deg,#0A3528 0%,#0E4D3A 55%,#0B3D2E 100%);position:relative}
-.wrap{padding:44px 64px 0;position:relative;z-index:2}
-.badge{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#0A3528;font-weight:800;letter-spacing:3px;font-size:18px;padding:10px 22px;border-radius:40px}
-.days{display:flex;align-items:flex-end;gap:18px;margin-top:26px}
-.n{font-size:190px;font-weight:900;line-height:.78;color:var(--gold2);letter-spacing:-8px}
-.dl{font-size:60px;font-weight:900;line-height:.95;padding-bottom:4px}
-.title{font-size:50px;font-weight:900;letter-spacing:1px;line-height:1.05;margin-top:18px}
-.title span{display:block;font-size:68px}
-.script{font-family:'Playfair Display',serif;font-style:italic;font-weight:800;color:var(--gold2);font-size:42px;margin-top:12px;max-width:600px;line-height:1.1}
-.prods{position:absolute;right:60px;top:70px;width:370px;height:370px;z-index:1}
-.glow{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#F3F7EE 60%,#E4EEDB 100%);border:6px solid var(--gold2);box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.prods img{position:absolute;filter:drop-shadow(0 18px 22px rgba(0,0,0,.35))}
-.card{margin:34px 64px 0;background:var(--cream);color:var(--ink);border-radius:28px;padding:30px 30px 32px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
-.card h3{grid-column:1/-1;font-size:18px;letter-spacing:3px;color:var(--em2);font-weight:800}
+background:radial-gradient(circle at 80% 18%,#1B7A5C 0%,transparent 45%),linear-gradient(160deg,#0A3528 0%,#0E4D3A 55%,#0B3D2E 100%);position:relative}
+.head{padding:40px 64px 0;text-align:center}
+.badge{display:inline-flex;background:var(--gold);color:#0A3528;font-weight:800;letter-spacing:3px;font-size:17px;padding:9px 22px;border-radius:40px}
+.hero{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:20px}
+.n{font-size:200px;font-weight:900;line-height:.8;color:var(--gold2);letter-spacing:-6px}
+.stack{text-align:left}
+.stack .d{font-size:44px;font-weight:900;color:var(--gold2);letter-spacing:6px;line-height:1}
+.stack .e{font-size:52px;font-weight:900;line-height:1.02}
+.stack .c{font-size:74px;font-weight:900;line-height:.95}
+.script{font-family:'Playfair Display',serif;font-style:italic;font-weight:800;color:var(--gold2);font-size:46px;margin-top:14px}
+.stage{margin:30px 64px 0;height:450px;background:radial-gradient(ellipse at 50% 35%,#FFFFFF 0%,#FFFFFF 55%,#EEF3E8 100%);border-radius:30px;position:relative;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.3);border:4px solid var(--gold2)}
+.stage:after{content:"";position:absolute;left:8%;right:8%;bottom:22px;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(14,77,58,.18),transparent 70%)}
+.r{position:absolute;left:0;right:0;display:flex;justify-content:center;align-items:flex-end}
+.r img{object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.18))}
+.back{bottom:130px;gap:30px}
+.front{bottom:36px;gap:8px}
+.card{margin:30px 64px 0;background:var(--cream);color:var(--ink);border-radius:26px;padding:26px 30px 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px 18px}
+.card h3{grid-column:1/-1;font-size:16px;letter-spacing:3px;color:var(--em2);font-weight:800}
 .it{display:flex;gap:10px;align-items:flex-start}
-.ic{flex:none;width:38px;height:38px;border-radius:14px;background:var(--em);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
-.it b{display:block;font-size:16.5px;font-weight:800;line-height:1.2}
-.it small{font-size:13px;font-weight:600;color:#5B6B65;line-height:1.3}
-.cond{margin:34px 64px 0;border:2px solid var(--gold2);border-radius:22px;padding:20px 30px;display:flex;align-items:center;gap:22px;position:relative;z-index:2}
-.cond .big{font-size:60px;font-weight:900;color:var(--gold2);line-height:1}
-.cond .t{font-size:16px;letter-spacing:3px;color:var(--gold2);font-weight:800}
-.cond .d{font-size:23px;font-weight:800;line-height:1.2;margin-top:4px}
-.cta{position:absolute;left:0;right:0;bottom:0;background:var(--gold);color:#0A3528;padding:24px 64px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+.ic{flex:none;width:36px;height:36px;border-radius:11px;background:var(--em);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}
+.it b{display:block;font-size:16px;font-weight:800;line-height:1.2}
+.it small{font-size:12.5px;font-weight:600;color:#5B6B65;line-height:1.3}
+.cond{margin:26px 64px 0;border:2px solid var(--gold2);border-radius:22px;padding:14px 30px;display:flex;align-items:center;gap:22px}
+.cond .big{font-size:56px;font-weight:900;color:var(--gold2);line-height:1}
+.cond .t{font-size:15px;letter-spacing:3px;color:var(--gold2);font-weight:800}
+.cond .dd{font-size:23px;font-weight:800;line-height:1.2;margin-top:3px}
+.cta{position:absolute;left:0;right:0;bottom:0;background:var(--gold);color:#0A3528;padding:22px 64px;display:flex;align-items:center;justify-content:space-between}
+.cta .s{font-size:18px;font-weight:800;letter-spacing:3px}
 .cta .a{font-size:40px;font-weight:900;letter-spacing:1px}
 .cta .b{background:var(--red);color:#fff;font-weight:900;font-size:22px;letter-spacing:2px;padding:14px 24px;border-radius:14px;transform:rotate(-2deg);box-shadow:0 6px 14px rgba(0,0,0,.2)}
-.shelf{margin:40px 64px 0;background:#fff;border-radius:28px;padding:24px 24px 18px;position:relative;z-index:2;box-shadow:0 14px 34px rgba(0,0,0,.25)}
-.shelf h3{font-size:16px;letter-spacing:3px;color:var(--em2);font-weight:800;text-align:center;margin-bottom:10px}
-.row{display:flex;align-items:flex-end;justify-content:space-between}
-.sp{display:flex;flex-direction:column;align-items:center;width:14.5%}
-.sp img{mix-blend-mode:multiply;object-fit:contain;max-width:100%}
-.sp span{font-size:13px;font-weight:700;color:var(--ink);margin-top:6px;text-align:center;line-height:1.15;min-height:30px}
-.card{grid-template-columns:1fr 1fr 1fr!important}
 </style></head><body>
-<div class="prods"><div class="glow"></div>
-  <img src="img/aloe.png" style="height:230px;left:55px;top:62px">
-  <img src="img/f1.png" style="height:230px;left:138px;top:82px">
-  <img src="img/fibre.png" style="height:128px;left:235px;top:190px">
-  <img src="img/tea.png" style="height:120px;left:35px;top:200px">
-</div>
-<div class="wrap">
+<div class="head">
   <div class="badge">★ EDISI NOVEMBER</div>
-  <div class="days"><div class="n">5</div><div class="dl">DAYS</div></div>
-  <div class="title">EAT CLEAN<span>CHALLENGE</span></div>
+  <div class="hero"><div class="n">5</div><div class="stack"><div class="d">DAYS</div><div class="e">EAT CLEAN</div><div class="c">CHALLENGE</div></div></div>
   <div class="script">Reset Your Guts &amp; Hormon</div>
 </div>
-<div class="shelf"><h3>PRODUK SOKONGAN GUT &amp; HORMON</h3><div class="row">
-  <div class="sp"><img src="img/celactivo.png" style="height:172px"><span>Celactivo</span></div>
-  <div class="sp"><img src="img/turmerix.png" style="height:160px"><span>TurmeriX</span></div>
-  <div class="sp"><img src="img/collagen.png" style="height:168px"><span>Collagen Plus</span></div>
-  <div class="sp"><img src="img/omega.png" style="height:168px"><span>Omega 3<br>Fish Oil</span></div>
-  <div class="sp"><img src="img/multi.png" style="height:160px"><span>Multivitamin &amp; Minerals</span></div>
-  <div class="sp"><img src="img/tc.png" style="height:160px"><span>TC Formula</span></div>
-</div></div>
+<div class="stage">
+  <div class="r back">
+    <img src="img/collagen.png" style="height:190px">
+    <img src="img/aloe.png" style="height:285px">
+    <img src="img/f1.png" style="height:270px">
+    <img src="img/fibre.png" style="height:190px">
+  </div>
+  <div class="r front">
+    <img src="img/celactivo.png" style="height:168px">
+    <img src="img/turmerix.png" style="height:158px">
+    <img src="img/tea.png" style="height:155px">
+    <img src="img/omega.png" style="height:165px">
+    <img src="img/multi.png" style="height:158px">
+    <img src="img/tc.png" style="height:158px">
+  </div>
+</div>
 <div class="card">
   <h3>APA ANDA DAPAT</h3>
   <div class="it"><div class="ic">1</div><div><b>Meal Plan Eat Clean</b><small>Panduan makan lengkap 5 hari</small></div></div>
@@ -66,9 +65,6 @@ background:radial-gradient(circle at 85% 30%,#1B7A5C 0%,transparent 45%),linear-
   <div class="it"><div class="ic">5</div><div><b>Group Support</b><small>Semangat bersama peserta lain</small></div></div>
   <div class="it"><div class="ic">6</div><div><b>Resepi Mudah</b><small>Menu eat clean sedap &amp; ringkas</small></div></div>
 </div>
-<div class="cond">
-  <div class="big">2</div>
-  <div><div class="t">SYARAT PENYERTAAN</div><div class="d">Pembelian 2 item sepanjang bulan November</div></div>
-</div>
-<div class="cta"><div><div style="font-size:19px;font-weight:800;letter-spacing:3px">DAFTAR SEGERA</div><div class="a">HUBUNGI COACH ANDA!</div></div><div class="b">TEMPAT TERHAD</div></div>
+<div class="cond"><div class="big">2</div><div><div class="t">SYARAT PENYERTAAN</div><div class="dd">Pembelian 2 item sepanjang bulan November</div></div></div>
+<div class="cta"><div><div class="s">DAFTAR SEGERA</div><div class="a">HUBUNGI COACH ANDA!</div></div><div class="b">TEMPAT TERHAD</div></div>
 </body></html>
